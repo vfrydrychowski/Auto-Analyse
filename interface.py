@@ -14,8 +14,8 @@ def recupere():
 	obj = pd.read_csv(fichier)
 	fichier.close()
 
-#def save(figure) :
-	#fig.savefig(figure)
+def save(fig) :
+	fig.savefig("graphe.png")
 
 fenetre = Tk()
 fenetre.geometry("900x600")
@@ -103,7 +103,7 @@ for i in range(len(liste)) :
 
 	longlets.append(ttk.Frame(onglets))
 	onglets.add(longlets[i], text="Tronçon" + str(i+1))
-	lbuttons.append(Button(longlets[i], text="Sauvegarder"))
+	lbuttons.append(Button(longlets[i], text="Sauvegarder", command=lambda: save(fig)))
 	lbuttons[i].pack(side=BOTTOM)
 
 	canvas = FigureCanvasTkAgg(fig, master=longlets[i])
