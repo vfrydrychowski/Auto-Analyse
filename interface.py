@@ -5,17 +5,17 @@ from tkinter import ttk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import string
-import csv
+import pandas as pd
 
 
 def recupere():
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 	fichier = open(filename, "r")
-	obj = csv.reader(fichier)
-	#for ligne in obj :
-		#print(ligne)
-	#content = fichier.read()
+	obj = pd.read_csv(fichier)
 	fichier.close()
+
+#def save(figure) :
+	#fig.savefig(figure)
 
 fenetre = Tk()
 fenetre.geometry("900x600")
@@ -36,15 +36,15 @@ fenetre.geometry("900x600")
 
 #scroll_bar.config(command=text.yview)
 
-Frame1 = Frame(fenetre, borderwidth=2, relief=GROOVE)
+Frame1 = Frame(fenetre, borderwidth=2)
 Frame1.pack(side=LEFT, padx=50, pady=50)
 
-Frame2 = Frame(Frame1, borderwidth=2, relief=GROOVE)
+Frame2 = Frame(Frame1, borderwidth=2)
 Frame2.pack(side=TOP, padx=5, pady=5)
 
 Label(Frame2, text="CSV").pack(side=TOP, padx=5, pady=5)
 
-Frame3 = Frame(Frame1, borderwidth=2, relief=GROOVE)
+Frame3 = Frame(Frame1, borderwidth=2)
 Frame3.pack(padx=5, pady=5)
 
 Label(Frame3, text="Paramètres").pack(side=TOP, padx=5, pady=5)
@@ -79,49 +79,44 @@ bouton8.pack()
 bouton9 = Button(Frame1, text="Lancer l'analyse")
 bouton9.pack()
 
-Frame4 = Frame(fenetre, borderwidth=2, relief=GROOVE)
+Frame4 = Frame(fenetre, borderwidth=2)
 Frame4.pack(side=RIGHT, padx=50, pady=50)
 
 onglets = ttk.Notebook(Frame4)
-tab1 = ttk.Frame(onglets)
-tab2 = ttk.Frame(onglets)
-tab3 = ttk.Frame(onglets)
-tab4 = ttk.Frame(onglets)
 
-onglets.add(tab1, text='Tronçon1')
-onglets.add(tab2, text='Tronçon2')
-onglets.add(tab3, text='Tronçon3')
-onglets.add(tab4, text='Tronçon4')
+#ici appeler fonction de Valentin pour récupérer liste de figures
+liste = ["ee", "rr", "tt", "yy", "uu"]
+
+longlets = []
+lbuttons = []
+
+for i in range(len(liste)) :
+
+	#################A retirer quand liste de figures
+	fig = Figure(figsize=(5,5),dpi=100)
+	y = [i**2 for i in range(101)]
+	#################
+	#fig = liste[i]
+	plot1 = fig.add_subplot(111)
+	plot1.plot(y)
+	###
+
+	longlets.append(ttk.Frame(onglets))
+	onglets.add(longlets[i], text="Tronçon" + str(i+1))
+	lbuttons.append(Button(longlets[i], text="Sauvegarder"))
+	lbuttons[i].pack(side=BOTTOM)
+
+	canvas = FigureCanvasTkAgg(fig, master=longlets[i])
+	canvas.draw()
+	canvas.get_tk_widget().pack(side=TOP)
 
 onglets.pack(side=BOTTOM, expand=1, fill="both")
 
 #Label(tab1, text="qjzghefgrekl").pack(side=TOP, padx=50, pady=50)
 
-bouton10 = Button(tab1, text="Sauvegarder")
-bouton10.pack(side=BOTTOM)
-
-bouton11 = Button(tab2, text="Sauvegarder")
-bouton11.pack()
-
-bouton12 = Button(tab3, text="Sauvegarder")
-bouton12.pack()
-
-bouton13 = Button(tab4, text="Sauvegarder")
-bouton13.pack()
-
 bouton14 = Button(Frame4, text="Paramètres globaux")
 bouton14.pack(side=TOP, padx=30, pady=30)
 
-fig = Figure(figsize=(5,5),dpi=100)
 
-#fonction pour le graphe a mettre ici
-y = [i**2 for i in range(101)]
-plot1 = fig.add_subplot(111)
-plot1.plot(y)
-###
-
-canvas = FigureCanvasTkAgg(fig, master=tab1)
-canvas.draw()
-canvas.get_tk_widget().pack(side=TOP)
 
 fenetre.mainloop()
