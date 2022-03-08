@@ -10,7 +10,7 @@ import analyse as an
 
 def recupere(strGlob):
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
-	globals()[strGlob] = pd.read_csv(filename)
+	globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 	
 
 #def save(figure) :
