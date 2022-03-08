@@ -6,16 +6,26 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import string
 import pandas as pd
+import analyse as an
 
+obj = None
 
-def recupere():
+def recupere(obj):
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
-	fichier = open(filename, "r")
-	obj = pd.read_csv(fichier)
-	fichier.close()
+	obj = pd.read_csv(filename)
+	
 
 #def save(figure) :
 	#fig.savefig(figure)
+
+def graph(csvan, csvdyn, csvdef) :
+	fig = an.plot_graph(csvan, csvdyn, csvdef)[0][0]
+	plot1 = fig.add_subplot(111)
+	plot1.plot(y)
+	canvas = FigureCanvasTkAgg(fig, master=longlets[i])
+	canvas.draw()
+	canvas.get_tk_widget().pack(side=TOP)
+
 
 fenetre = Tk()
 fenetre.geometry("900x600")
@@ -49,13 +59,17 @@ Frame3.pack(padx=5, pady=5)
 
 Label(Frame3, text="Paramètres").pack(side=TOP, padx=5, pady=5)
 
-bouton = Button(Frame2, text = "Csv dynamique", command=recupere)
+csvdyn = None 
+bouton = Button(Frame2, text = "Csv dynamique", command=lambda: recupere(csvdyn))
 bouton.pack(side=TOP, padx=5, pady=5)
+print(csvdyn)
 
-bouton1 = Button(Frame2, text = "Csv défensif", command=recupere)
+csvdef = None
+bouton1 = Button(Frame2, text = "Csv défensif", command=lambda: recupere(csvdef))
 bouton1.pack(padx=5, pady=5)
 
-bouton2 = Button(Frame2, text = "Csv à analyser", command=recupere)
+csvan = None
+bouton2 = Button(Frame2, text = "Csv à analyser", command=lambda: recupere(csvan))
 bouton2.pack(padx=5, pady=5)
 
 bouton3 = Checkbutton(Frame3, text="vitesse")
@@ -76,7 +90,7 @@ bouton7.pack()
 bouton8 = Checkbutton(Frame3, text="_____")
 bouton8.pack()
 
-bouton9 = Button(Frame1, text="Lancer l'analyse")
+bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdef, csvdef))
 bouton9.pack()
 
 Frame4 = Frame(fenetre, borderwidth=2)
@@ -90,15 +104,15 @@ liste = ["ee", "rr", "tt", "yy", "uu"]
 longlets = []
 lbuttons = []
 
+
+
 for i in range(len(liste)) :
 
 	#################A retirer quand liste de figures
-	fig = Figure(figsize=(5,5),dpi=100)
-	y = [i**2 for i in range(101)]
+	#fig = Figure(figsize=(5,5),dpi=100)
+	#y = [i**2 for i in range(101)]
 	#################
-	#fig = liste[i]
-	plot1 = fig.add_subplot(111)
-	plot1.plot(y)
+	
 	###
 
 	longlets.append(ttk.Frame(onglets))
@@ -106,10 +120,7 @@ for i in range(len(liste)) :
 	lbuttons.append(Button(longlets[i], text="Sauvegarder"))
 	lbuttons[i].pack(side=BOTTOM)
 
-	canvas = FigureCanvasTkAgg(fig, master=longlets[i])
-	canvas.draw()
-	canvas.get_tk_widget().pack(side=TOP)
-
+	
 onglets.pack(side=BOTTOM, expand=1, fill="both")
 
 #Label(tab1, text="qjzghefgrekl").pack(side=TOP, padx=50, pady=50)
