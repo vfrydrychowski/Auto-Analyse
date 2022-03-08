@@ -14,3 +14,14 @@ def calcVitesse(df):
 #out: nouveau dataframe avec insertion de la distance
 def calcDistance(df):
     return df.assign(0, 'distance', (df.get('Vitesse')*df.index[1]).cumsum())
+
+#calcule le schema de la courbe de vitesse
+def plotVitesse(dfAn, dfAgg, dfDef):
+    fig = plt.figure(0)
+    plt.plot(dfAn['distance'], dfAn['Vitesse'], label='User', color='blue')
+    plt.plot(dfAgg['distance'], dfAgg['Vitesse'], label='Aggresiv', color='red')
+    plt.plot(dfDef['distance'], dfDef['Vitesse'], label = 'Cautious', color = 'green')
+    plt.legend()
+    plt.xlabel('Distance m')
+    plt.ylabel('Vitesse m/s')
+    return fig
