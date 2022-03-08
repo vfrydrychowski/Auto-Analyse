@@ -6,7 +6,9 @@ import matplotlib.pyplot as plt
 #in: dframe
 #out: nouveau dataframe avec insertion de la vitesse
 def calcVitesse(df):
-    return df.assign('Vitesse', np.sign(df.get('[00].VehicleUpdate-speed.001'))*np.sqrt(df.get('[00].VehicleUpdate-speed.001')**2 + df.get('[00].VehicleUpdate-speed.002')**2 + df.get('[00].VehicleUpdate-speed.003')**2))
+    tdf = df.copy()
+    tdf.insert(0, 'Vitesse', np.sign(df.get('[00].VehicleUpdate-speed.001'))*np.sqrt(df.get('[00].VehicleUpdate-speed.001')**2 + df.get('[00].VehicleUpdate-speed.002')**2 + df.get('[00].VehicleUpdate-speed.003')**2))
+    return tdf
 
 #calcule la distance parcourue de la voiture du début du dataframe à la fin
 #Colonne panda 'Vitesse' doit être présente
@@ -14,7 +16,9 @@ def calcVitesse(df):
 #out: nouveau dataframe avec insertion de la distance
 def calcDistance(df):
     tdf = df.fillna(value=0)
-    return df.assign(0, 'distance', (df.get('Vitesse')*df.index[1]).cumsum())
+    tdf.insert(0, 'distance', (df.get('Vitesse')*df.index[1]).cumsum())
+    tdf = df.fillna(value=0)
+    return tdf
 
 #calcule le schema de la courbe de vitesse
 def plotVitesse(dfAn, dfAgg, dfDef):
