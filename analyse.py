@@ -30,3 +30,8 @@ def plotVitesse(dfAn, dfAgg, dfDef):
     plt.xlabel('Distance m')
     plt.ylabel('Vitesse m/s')
     return fig
+
+#calcul le tableau de grtaphiques features*tronçons
+#TODO multi paramêtres et multi tronçons
+def plot_graph(dfAn, dfAgg, dfDef):
+    return [[plotVitesse(dfAn, dfAgg, dfDef)]]
