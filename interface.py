@@ -8,11 +8,9 @@ import string
 import pandas as pd
 import analyse as an
 
-obj = None
-
-def recupere(obj):
+def recupere(strGlob):
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
-	obj = pd.read_csv(filename)
+	globals()[strGlob] = pd.read_csv(filename)
 	
 
 #def save(figure) :
@@ -60,16 +58,16 @@ Frame3.pack(padx=5, pady=5)
 Label(Frame3, text="Paramètres").pack(side=TOP, padx=5, pady=5)
 
 csvdyn = None 
-bouton = Button(Frame2, text = "Csv dynamique", command=lambda: recupere(csvdyn))
+bouton = Button(Frame2, text = "Csv dynamique", command=lambda: recupere('csvdyn'))
 bouton.pack(side=TOP, padx=5, pady=5)
 print(csvdyn)
 
 csvdef = None
-bouton1 = Button(Frame2, text = "Csv défensif", command=lambda: recupere(csvdef))
+bouton1 = Button(Frame2, text = "Csv défensif", command=lambda: recupere('csvdef'))
 bouton1.pack(padx=5, pady=5)
 
 csvan = None
-bouton2 = Button(Frame2, text = "Csv à analyser", command=lambda: recupere(csvan))
+bouton2 = Button(Frame2, text = "Csv à analyser", command=lambda: recupere('csvan'))
 bouton2.pack(padx=5, pady=5)
 
 bouton3 = Checkbutton(Frame3, text="vitesse")
@@ -90,7 +88,7 @@ bouton7.pack()
 bouton8 = Checkbutton(Frame3, text="_____")
 bouton8.pack()
 
-bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdef, csvdef))
+bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
 bouton9.pack()
 
 Frame4 = Frame(fenetre, borderwidth=2)
