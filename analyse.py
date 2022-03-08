@@ -34,4 +34,5 @@ def plotVitesse(dfAn, dfAgg, dfDef):
 #calcul le tableau de grtaphiques features*tronçons
 #TODO multi paramêtres et multi tronçons
 def plot_graph(dfAn, dfAgg, dfDef):
+    dfAn, dfAgg, dfDef = calcDistance(calcVitesse(dfAn)), calcDistance(calcVitesse(dfAgg)), calcDistance(calcVitesse(dfDef))
     return [[plotVitesse(dfAn, dfAgg, dfDef)]]
