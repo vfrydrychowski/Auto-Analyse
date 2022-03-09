@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import re
 
 #calcule la vitesse de la voiture 
 #in: dframe
@@ -30,6 +31,15 @@ def plotVitesse(dfAn, dfAgg, dfDef):
     plt.xlabel('Distance m')
     plt.ylabel('Vitesse m/s')
     return fig
+
+#reconnait une string comme le nom d'un délimiteur de tronçons
+#in: une string
+#out: un bool
+def parse(parse):
+    if re.match("Parser\d*", parse) != None:
+        return True
+    else:
+        return False
 
 #calcul le tableau de grtaphiques features*tronçons
 #TODO multi paramêtres et multi tronçons
