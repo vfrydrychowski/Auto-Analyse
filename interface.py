@@ -19,10 +19,10 @@ def recupere(strGlob):
 def graph(csvan, csvdyn, csvdef) :
 	fig = an.plot_graph(csvan, csvdyn, csvdef)[0][0]
 	plot1 = fig.add_subplot(111)
-	plot1.plot(y)
-	canvas = FigureCanvasTkAgg(fig, master=longlets[i])
+	#on affiche provisoirement sur l'onglet 0
+	canvas = FigureCanvasTkAgg(fig, master=longlets[0])
 	canvas.draw()
-	canvas.get_tk_widget().pack(side=TOP)
+	canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
 
 
 fenetre = Tk()
@@ -60,7 +60,7 @@ Label(Frame3, text="Paramètres").pack(side=TOP, padx=5, pady=5)
 csvdyn = None 
 bouton = Button(Frame2, text = "Csv dynamique", command=lambda: recupere('csvdyn'))
 bouton.pack(side=TOP, padx=5, pady=5)
-print(csvdyn)
+#print(csvdyn)
 
 csvdef = None
 bouton1 = Button(Frame2, text = "Csv défensif", command=lambda: recupere('csvdef'))
