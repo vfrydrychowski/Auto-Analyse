@@ -18,7 +18,6 @@ def recupere(strGlob):
 
 def graph(csvan, csvdyn, csvdef) :
 	fig = an.plot_graph(csvan, csvdyn, csvdef)[0][0]
-	plot1 = fig.add_subplot(111)
 	#on affiche provisoirement sur l'onglet 0
 	canvas = FigureCanvasTkAgg(fig, master=longlets[0])
 	canvas.draw()
