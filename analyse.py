@@ -35,11 +35,32 @@ def plotVitesse(dfAn, dfAgg, dfDef):
 #reconnait une string comme le nom d'un délimiteur de tronçons
 #in: une string
 #out: un bool
-def parse(parse):
-    if re.match("Parser\d*", parse) != None:
+def filter(string):
+    if re.match("Parser\d*", string) != None:
         return True
     else:
         return False
+
+#traduit la colonne des trigger en int et leur etat
+def trigToInt(df):
+    dataf = df.copy()
+    
+    name_loc = df.columns.get_loc('TriggeredState-name') # recupération des emplacements des colonnes
+    state_loc = df.columns.get_loc('TriggeredState-state')
+    
+    for i in range(int(df.shape[0])):
+        dataf.iloc[i, name_loc] = int(dataf.iloc[i, name_loc][6:]) #traduction en int des nom de parser
+        
+    dataf.iloc[:, state_loc] = dataf.iloc[:, state_loc].astype(int) #traduction en int des états de parser
+    
+    return dataf
+
+#à partir d'un dataframe, découpe en tableaux de dataframes en fonctions des triggers
+#TODO exeption de nb impair de triggers
+def parse(dataf):
+    df = dataf[[filter(x) for x in dataf['TriggeredState-name'].fillna(value="0")]]
+    dim = len(df['TriggeredState-name'].unique()) #calcul du nombre de triggers
+    #tableD = [df[df['TriggeredState-name']=]]
 
 #calcul le tableau de grtaphiques features*tronçons
 #TODO multi paramêtres et multi tronçons
