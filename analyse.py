@@ -55,12 +55,18 @@ def trigToInt(df):
     
     return dataf
 
+#fonction boolean de masque du troncon i
+def isTroncon(df,i):
+    return df['TriggeredState-name'] == i or (df['TriggeredState-name'] == i+1 and df['TriggeredState-state'] == 1)
+
 #à partir d'un dataframe, découpe en tableaux de dataframes en fonctions des triggers
 #TODO exeption de nb impair de triggers
 def parse(dataf):
     df = dataf[[filter(x) for x in dataf['TriggeredState-name'].fillna(value="0")]]
+    df = trigToInt(df)
     dim = len(df['TriggeredState-name'].unique()) #calcul du nombre de triggers
-    #tableD = [df[df['TriggeredState-name']=]]
+    tableD = [df[isTroncon(df,i)] for i in range(dim/2)]
+    return tableD
 
 #calcul le tableau de grtaphiques features*tronçons
 #TODO multi paramêtres et multi tronçons
