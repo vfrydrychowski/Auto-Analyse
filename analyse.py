@@ -7,8 +7,8 @@ import re
 #in: dframe
 #out: nouveau dataframe avec insertion de la vitesse
 def calcVitesse(df):
-    tdf = df.copy()
-    tdf.insert(0, 'Vitesse', np.sign(df.get('[00].VehicleUpdate-speed.001'))*np.sqrt(df.get('[00].VehicleUpdate-speed.001')**2 + df.get('[00].VehicleUpdate-speed.002')**2 + df.get('[00].VehicleUpdate-speed.003')**2))
+    tdf = df.fillna(value=0)
+    tdf.insert(0, 'Vitesse', np.sign(tdf.get('[00].VehicleUpdate-speed.001'))*np.sqrt(tdf.get('[00].VehicleUpdate-speed.001')**2 + tdf.get('[00].VehicleUpdate-speed.002')**2 + tdf.get('[00].VehicleUpdate-speed.003')**2))
     return tdf
 
 #calcule la distance parcourue de la voiture du début du dataframe à la fin
@@ -17,8 +17,7 @@ def calcVitesse(df):
 #out: nouveau dataframe avec insertion de la distance
 def calcDistance(df):
     tdf = df.fillna(value=0)
-    tdf.insert(0, 'distance', (df.get('Vitesse')*df.index[1]).cumsum())
-    tdf = df.fillna(value=0)
+    tdf.insert(0, 'distance', (tdf.get('Vitesse')*tdf.index[1]).cumsum())
     return tdf
 
 #calcule le schema de la courbe de vitesse
