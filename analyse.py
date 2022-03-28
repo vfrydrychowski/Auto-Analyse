@@ -81,5 +81,7 @@ def parse(dataf):
 #calcul le tableau de grtaphiques features*tronçons
 #TODO multi paramêtres et multi tronçons
 def plot_graph(dfAn, dfAgg, dfDef):
-    dfAn, dfAgg, dfDef = calcDistance(calcVitesse(dfAn)), calcDistance(calcVitesse(dfAgg)), calcDistance(calcVitesse(dfDef))
-    return [[plotVitesse(dfAn, dfAgg, dfDef)]]
+    csvs = [dfAn, dfAgg, dfDef]
+    DV = [calcDistance(calcVitesse(x)) for x in csvs]
+    tronc = np.transpose([parse(x) for x in DV])
+    return [[plotVitesse(x[0], x[1], x[2])] for x in tronc]
