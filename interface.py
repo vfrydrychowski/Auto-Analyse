@@ -9,7 +9,8 @@ import pandas as pd
 import analyse as an
 import numpy as np
 
-def recupere(strGlob):
+
+def recupere(strGlob): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 	globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 	
@@ -18,15 +19,21 @@ def recupere(strGlob):
 	#fig.savefig(figure)
 
 def graph(csvan, csvdyn, csvdef) :
+	#on récupère la liste de figures
 	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef))
 	i,j = tabfig.shape
 	contenantfigs = []
 
 	longlets = []
 	lbuttons = []
+	#on affiche les onglets dynamiquement
+
+	global contenantonglets
+	global onglets
 	contenantonglets = Frame(fenetre, borderwidth=2)
 	contenantonglets.pack(side=RIGHT, padx=50, pady=50)
 	onglets = ttk.Notebook(contenantonglets)
+
 
 	for k in range(i) :
 		longlets.append(ttk.Frame(onglets))
@@ -44,13 +51,20 @@ def graph(csvan, csvdyn, csvdef) :
 			#a verifier si ça marche qd plusieurs tabs par onglets
 
 	onglets.pack(side=BOTTOM, expand=1, fill="both")
+	fenetre.update()
+
+
+def reinit(frame, canvas) :
+	frame.destroy()
+	#canvas.get_tk_widget().destroy()
+	canvas.destroy()
+	fenetre.update()
 
 
 fenetre = Tk()
 fenetre.geometry("900x600")
 
 #Canvas(fenetre, width=250, height=100, bg='white').pack(side=TOP, padx=5, pady=5)
-
 
 #l = LabelFrame(fenetre, text="Documentation", bg='ivory', fg='black', padx=20, pady=20)
 #l.pack(side=BOTTOM, fill="both", expand="yes")
@@ -64,6 +78,8 @@ fenetre.geometry("900x600")
 #text.pack()
 
 #scroll_bar.config(command=text.yview)
+
+#contenantonglets = Frame(fenetre, borderwidth=2)
 
 Frame1 = Frame(fenetre, borderwidth=2)
 Frame1.pack(side=LEFT, padx=50, pady=50)
@@ -111,5 +127,9 @@ bouton8.pack()
 
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
 bouton9.pack()
+
+bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(contenantonglets, onglets))
+bouton10.pack()
+
 
 fenetre.mainloop()
