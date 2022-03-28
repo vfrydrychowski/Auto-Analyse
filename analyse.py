@@ -58,13 +58,24 @@ def trigToInt(df):
 def isTroncon(df,i):
     return df['TriggeredState-name'] == i or (df['TriggeredState-name'] == i+1 and df['TriggeredState-state'] == 1)
 
+#retourne l'index de la première et dernière valeur du tronçon
+def getIndex(data, i):
+    return (data[data['TriggeredState-name'] == i].head(1).index, data[data['TriggeredState-name'] == i+1].head(1).index)
+
 #à partir d'un dataframe, découpe en tableaux de dataframes en fonctions des triggers
 #TODO exeption de nb impair de triggers
 def parse(dataf):
-    df = dataf[[filter(x) for x in dataf['TriggeredState-name'].fillna(value="0")]]
+    df = dataf[[filter(str(x)) for x in dataf['TriggeredState-name'].fillna(value="0")]]#filtration des bon formats de parsers
     df = trigToInt(df)
     dim = len(df['TriggeredState-name'].unique()) #calcul du nombre de triggers
-    tableD = [df[isTroncon(df,i)] for i in range(dim/2)]
+    
+    diml = df['TriggeredState-name'].unique() 
+    diml = diml[diml%2 == 0] #liste des identifiants de triggers de début de troncons
+    
+    tableD = [0] * (dim//2)
+    for i in range(dim//2):
+        f,l = getIndex(df, diml[i])
+        tableD[i] = df.loc[f[0]:l[0]]
     return tableD
 
 #calcul le tableau de grtaphiques features*tronçons
