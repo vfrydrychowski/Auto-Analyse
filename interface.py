@@ -9,10 +9,23 @@ import pandas as pd
 import analyse as an
 import numpy as np
 
+global listel
+listel=[]
 
-def recupere(strGlob): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
+def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 	globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
+	s = filename.split("/")
+
+	if(nom_frame == 'Frame2_1') :
+		listel.append(LabelFrame(Frame2_1, padx=5, pady=5))
+	elif(nom_frame == 'Frame2_2') :
+		listel.append(LabelFrame(Frame2_2, padx=5, pady=5))
+	else :
+		listel.append(LabelFrame(Frame2_3, padx=5, pady=5))
+
+	listel[-1].pack(fill="both", side="right", expand="no")
+	Label(listel[-1], text=s[-1]).pack()
 	
 
 #def save(figure) :
@@ -63,6 +76,9 @@ def reinit(tab, frame) :
 		for j in range(tab.shape[1]) :
 			tab[i][j].clf()
 	frame.destroy()
+
+	for i in range(len(listel)) :
+		listel[i].destroy()
 	fenetre.update()
 
 
@@ -94,23 +110,32 @@ Frame2.pack(side=TOP, padx=5, pady=5)
 
 Label(Frame2, text="CSV").pack(side=TOP, padx=5, pady=5)
 
+Frame2_1 = Frame(Frame2, borderwidth=2)
+Frame2_1.pack(padx=5, pady=5)
+
+Frame2_2 = Frame(Frame2, borderwidth=2)
+Frame2_2.pack(padx=5, pady=5)
+
+Frame2_3 = Frame(Frame2, borderwidth=2)
+Frame2_3.pack(padx=5, pady=5)
+
 Frame3 = Frame(Frame1, borderwidth=2)
 Frame3.pack(padx=5, pady=5)
 
 Label(Frame3, text="Paramètres").pack(side=TOP, padx=5, pady=5)
 
 csvdyn = None 
-bouton = Button(Frame2, text = "Csv dynamique", command=lambda: recupere('csvdyn'))
-bouton.pack(side=TOP, padx=5, pady=5)
+bouton = Button(Frame2_1, text = "Style 1", command=lambda: recupere('csvdyn', 'Frame2_1'))
+bouton.pack(side=LEFT, padx=5, pady=5)
 #print(csvdyn)
 
 csvdef = None
-bouton1 = Button(Frame2, text = "Csv défensif", command=lambda: recupere('csvdef'))
-bouton1.pack(padx=5, pady=5)
+bouton1 = Button(Frame2_2, text = "Style 2", command=lambda: recupere('csvdef', 'Frame2_2'))
+bouton1.pack(side=LEFT, padx=5, pady=5)
 
 csvan = None
-bouton2 = Button(Frame2, text = "Csv à analyser", command=lambda: recupere('csvan'))
-bouton2.pack(padx=5, pady=5)
+bouton2 = Button(Frame2_3, text = "Csv à analyser", command=lambda: recupere('csvan', 'Frame2_3'))
+bouton2.pack(side=LEFT, padx=5, pady=5)
 
 bouton3 = Checkbutton(Frame3, text="vitesse")
 bouton3.pack()
