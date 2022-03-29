@@ -21,8 +21,8 @@ def calcDistance(df):
     return tdf
 
 #calcule le schema de la courbe de vitesse
-def plotVitesse(dfAn, dfAgg, dfDef):
-    fig = plt.figure(0)
+def plotVitesse(dfAn, dfAgg, dfDef, glabel):
+    fig = plt.figure(glabel)
     plt.plot(dfAn['distance'], dfAn['Vitesse'], label='User', color='blue')
     plt.plot(dfAgg['distance'], dfAgg['Vitesse'], label='Aggresiv', color='red')
     plt.plot(dfDef['distance'], dfDef['Vitesse'], label = 'Cautious', color = 'green')
@@ -84,4 +84,5 @@ def plot_graph(dfAn, dfAgg, dfDef):
     csvs = [dfAn, dfAgg, dfDef]
     DV = [calcDistance(calcVitesse(x)) for x in csvs]
     tronc = np.transpose([parse(x) for x in DV])
-    return [[plotVitesse(x[0], x[1], x[2])] for x in tronc]
+    ids = [x for x in range(len(tronc))]
+    return [[plotVitesse(x[0], x[1], x[2], id)] for (x,id) in zip(tronc,ids)]
