@@ -19,9 +19,13 @@ def recupere(strGlob): #pour aller récupérer les csv, impossible de prendre un
 	#fig.savefig(figure)
 
 def graph(csvan, csvdyn, csvdef) :
+
 	#on récupère la liste de figures
+	global tabfig
 	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef))
 	i,j = tabfig.shape
+
+	#global contenantfigs
 	contenantfigs = []
 
 	longlets = []
@@ -29,7 +33,7 @@ def graph(csvan, csvdyn, csvdef) :
 	#on affiche les onglets dynamiquement
 
 	global contenantonglets
-	global onglets
+	
 	contenantonglets = Frame(fenetre, borderwidth=2)
 	contenantonglets.pack(side=RIGHT, padx=50, pady=50)
 	onglets = ttk.Notebook(contenantonglets)
@@ -41,7 +45,7 @@ def graph(csvan, csvdyn, csvdef) :
 		lbuttons.append(Button(longlets[k], text="Sauvegarder"))
 		lbuttons[k].pack(side=BOTTOM)
 
-		contenantfigs.append(Frame(longlets[k], borderwidth=2))
+		contenantfigs.append(Canvas(longlets[k], borderwidth=2))
 		contenantfigs[k].pack(padx=10, pady=10)
 		for l in range(j) :
 			#créer des labels pour contenir les fig
@@ -54,10 +58,11 @@ def graph(csvan, csvdyn, csvdef) :
 	fenetre.update()
 
 
-def reinit(frame, canvas) :
+def reinit(tab, frame) :
+	for i in range(tab.shape[0]) :
+		for j in range(tab.shape[1]) :
+			tab[i][j].clf()
 	frame.destroy()
-	#canvas.get_tk_widget().destroy()
-	canvas.destroy()
 	fenetre.update()
 
 
@@ -128,7 +133,7 @@ bouton8.pack()
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
 bouton9.pack()
 
-bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(contenantonglets, onglets))
+bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets))
 bouton10.pack()
 
 
