@@ -17,7 +17,7 @@ def calcVitesse(df):
 #out: nouveau dataframe avec insertion de la distance
 def calcDistance(df):
     tdf = df.fillna(value=0)
-    tdf.insert(0, 'distance', (tdf.get('Vitesse')*tdf.index[1]).cumsum())
+    tdf.insert(0, 'distance', (tdf.get('Vitesse')*(tdf.index[1]-tdf.index[0])).cumsum())
     return tdf
 
 #calcule le schema de la courbe de vitesse
