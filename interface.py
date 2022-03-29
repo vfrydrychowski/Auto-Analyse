@@ -9,7 +9,7 @@ import pandas as pd
 import analyse as an
 import numpy as np
 
-global listel
+global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
@@ -17,6 +17,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 	s = filename.split("/")
 
+	#on place notre label à côté du bouton correspondant
 	if(nom_frame == 'Frame2_1') :
 		listel.append(LabelFrame(Frame2_1, padx=5, pady=5))
 	elif(nom_frame == 'Frame2_2') :
@@ -72,13 +73,19 @@ def graph(csvan, csvdyn, csvdef) :
 
 
 def reinit(tab, frame) :
+	#on supprime le contenu du tableau de figures
 	for i in range(tab.shape[0]) :
 		for j in range(tab.shape[1]) :
 			tab[i][j].clf()
+
+	#on supprime la frame qui les affiche
 	frame.destroy()
 
+	#on supprime le nom des csv
 	for i in range(len(listel)) :
 		listel[i].destroy()
+
+	#on met à jour la fenêtre
 	fenetre.update()
 
 
