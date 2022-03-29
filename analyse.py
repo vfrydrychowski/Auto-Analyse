@@ -29,6 +29,7 @@ def plotVitesse(dfAn, dfAgg, dfDef, glabel):
     plt.legend()
     plt.xlabel('Distance m')
     plt.ylabel('Vitesse m/s')
+    plt.close(fig)
     return fig
 
 #reconnait une string comme le nom d'un délimiteur de tronçons
