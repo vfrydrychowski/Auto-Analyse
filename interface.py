@@ -4,7 +4,7 @@ from tkinter.messagebox import *
 from tkinter import ttk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
 import string
 import pandas as pd
 import analyse as an
@@ -31,10 +31,10 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	Label(listel[-1], text=s[-1]).pack()
 	
 
-def save(canvas, filename) :
-	canvas.postscript(file = filename+'.eps')
-	img = Image.open(filename+'.eps')
-	img.save(filename+'.png', 'png')
+def save(tab) :
+	for i in range(len(tab)) :
+		for j in range(len(tab[0])) :
+			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
 
 def graph(csvan, csvdyn, csvdef) :
 
@@ -53,17 +53,14 @@ def graph(csvan, csvdyn, csvdef) :
 	global contenantonglets
 	global Frame4
 	
-	#fonctionValentin = np.array()
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
-	Frame4 = Frame(fenetre, borderwidth=2)
-	Frame4.pack(side=BOTTOM, padx=5, pady=5)
-	l4 = LabelFrame(Frame4, text="Resultats", padx=20, pady=20)
+	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
-	for i in range(0,len(fonctionValentin)) :
-		if(fonctionValentin[i][0]>0):
-			Label(l4, text="Tronçon "+str(i)+" : Style1").pack()
-		elif(fonctionValentin[i][0]<0):
-			Label(l4, text="Tronçon "+str(i)+" : Style2").pack()
+	for z in range(0,len(fonctionValentin)) :
+		if(fonctionValentin[z][0]>0):
+			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
+		elif(fonctionValentin[z][0]<0):
+			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
 		
 	contenantonglets = Frame(fenetre, borderwidth=2)
 	contenantonglets.pack(side=TOP, padx=50, pady=50)
@@ -76,7 +73,7 @@ def graph(csvan, csvdyn, csvdef) :
 
 		contenantfigs.append(Canvas(longlets[k], borderwidth=2))
 		contenantfigs[k].pack(padx=10, pady=10)
-		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(contenantfigs[k], "graph"+str(k))))
+		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
 		lbuttons[k].pack(side=BOTTOM)
 		for l in range(j) :
 			#créer des labels pour contenir les fig
