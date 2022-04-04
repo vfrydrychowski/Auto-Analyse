@@ -89,6 +89,9 @@ def createClosestD(df1,df2):
     for x in df1['distance']:
         l.append([y for y in getClosestD(df2,x)])
     ndf2 = pd.DataFrame(l,columns = dista.columns)
+    dist2 = pd.Series(df1['distance'].values, name = 'distance', index = df1.index) #alignement de la distance sur celle du premier tableau
+    d2f.update(dist2)
+    df2.set_index('distance')
     return ndf2
 
 #calcul le tableau de grtaphiques tronçons*features
