@@ -79,7 +79,19 @@ def parse(dataf):
         tableD[i] = df.loc[f[0]:l[0]]
     return tableD
 
-#calcul le tableau de grtaphiques features*tronçons
+#donne la ligne du dataframe la plus proche de la distance d
+def getClosestD(df,d):
+    return df.iloc[(df['distance']-d).abs().argsort()[0]]
+
+#création du sataframe avec les valeurs de d2 indexé sur la distance de d1
+def createClosestD(df1,df2): 
+    l = []
+    for x in df1['distance']:
+        l.append([y for y in getClosestD(df2,x)])
+    ndf2 = pd.DataFrame(l,columns = dista.columns)
+    return ndf2
+
+#calcul le tableau de grtaphiques tronçons*features
 #TODO multi paramêtres et multi tronçons
 def plot_graph(dfAn, dfAgg, dfDef):
     csvs = [dfAn, dfAgg, dfDef]
