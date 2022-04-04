@@ -60,9 +60,9 @@ def graph(csvan, csvdyn, csvdef) :
 	l4 = LabelFrame(Frame4, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	for i in range(0,len(fonctionValentin)) :
-		if(fonctionValentin[i][0]>=0):
+		if(fonctionValentin[i][0]>0):
 			Label(l4, text="Tronçon "+str(i)+" : Style1").pack()
-		else:
+		elif(fonctionValentin[i][0]<0):
 			Label(l4, text="Tronçon "+str(i)+" : Style2").pack()
 		
 	contenantonglets = Frame(fenetre, borderwidth=2)
