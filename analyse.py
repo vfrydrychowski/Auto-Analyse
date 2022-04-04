@@ -88,9 +88,9 @@ def createClosestD(df1,df2):
     l = []
     for x in df1['distance']:
         l.append([y for y in getClosestD(df2,x)])
-    ndf2 = pd.DataFrame(l,columns = dista.columns)
+    ndf2 = pd.DataFrame(l,columns = df1.columns)
     dist2 = pd.Series(df1['distance'].values, name = 'distance', index = df1.index) #alignement de la distance sur celle du premier tableau
-    d2f.update(dist2)
+    df2.update(dist2)
     df2.set_index('distance')
     return ndf2
 
