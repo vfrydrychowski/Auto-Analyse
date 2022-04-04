@@ -79,7 +79,41 @@ def parse(dataf):
         tableD[i] = df.loc[f[0]:l[0]]
     return tableD
 
-#calcul le tableau de grtaphiques features*tronçons
+#donne la ligne du dataframe la plus proche de la distance d
+def getClosestD(df,d):
+    return df.iloc[(df['distance']-d).abs().argmin()]
+
+#création du sataframe avec les valeurs de d2 indexé sur la distance de d1
+def createClosestD(df1,df2): 
+    l = []
+    for x in df1['distance']:
+        l.append([y for y in getClosestD(df2,x)])
+    ndf2 = pd.DataFrame(l,columns = df1.columns)
+    dist2 = pd.Series(df1['distance'].values, name = 'distance', index = df1.index) #alignement de la distance sur celle du premier tableau
+    df2.update(dist2)
+    df2.set_index('distance')
+    return ndf2
+
+#fonction de calcul de proximité basique des courbes de vitesses
+#in deux dataframes indexés sur 'distance'. Doivent contenir le champs 'Vitesse'
+def vitesseScoreMoyCalc(df1,df2):
+    return np.abs(df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy()).mean()
+
+#renvoi le score de proximité de df avec df1 et df2
+# df1 > 0 et df2 < 0
+def score(df,df1,df2):
+    ndf1 = createClosestD(df,df1)
+    ndf2 = createClosestD(df, df2)
+    return vitesseScoreMoyCalc(df,ndf1) - vitesseScoreMoyCalc(df,ndf2)
+
+#renvoie les scores des vitesses poour chaques tronçons 
+def get_score(dfa, df1, df2):
+    csvs = [dfa, df1, df2]
+    DV = [calcDistance(calcVitesse(x)) for x in csvs]
+    tronc = np.transpose([parse(x) for x in DV])
+    return [[score(x[0], x[1], x[2])] for x in tronc]
+
+#calcul le tableau de grtaphiques tronçons*features
 #TODO multi paramêtres et multi tronçons
 def plot_graph(dfAn, dfAgg, dfDef):
     csvs = [dfAn, dfAgg, dfDef]
