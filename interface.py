@@ -53,17 +53,19 @@ def graph(csvan, csvdyn, csvdef) :
 	global contenantonglets
 	global Frame4
 	
-	fonctionValentin = 0
+	#fonctionValentin = np.array()
+	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
 	Frame4 = Frame(fenetre, borderwidth=2)
 	Frame4.pack(side=BOTTOM, padx=5, pady=5)
 	l4 = LabelFrame(Frame4, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
-	if(fonctionValentin==0):
-		Label(l4, text="Style1").pack()
-	else:
-		Label(l4, text="Style2").pack()
+	for i in range(0,len(fonctionValentin)) :
+		if(fonctionValentin[i][0]>=0):
+			Label(l4, text="Tronçon "+str(i)+" : Style1").pack()
+		else:
+			Label(l4, text="Tronçon "+str(i)+" : Style2").pack()
 		
-	contenantonglets = Frame(Frame4, borderwidth=2)
+	contenantonglets = Frame(fenetre, borderwidth=2)
 	contenantonglets.pack(side=TOP, padx=50, pady=50)
 	onglets = ttk.Notebook(contenantonglets)
 
