@@ -4,10 +4,12 @@ from tkinter.messagebox import *
 from tkinter import ttk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib import pyplot as plt
 import string
 import pandas as pd
 import analyse as an
 import numpy as np
+from PIL import Image
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
@@ -29,8 +31,10 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	Label(listel[-1], text=s[-1]).pack()
 	
 
-#def save(figure) :
-	#fig.savefig(figure)
+def save(tab) :
+	for i in range(len(tab)) :
+		for j in range(len(tab[0])) :
+			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
 
 def graph(csvan, csvdyn, csvdef) :
 
@@ -47,20 +51,30 @@ def graph(csvan, csvdyn, csvdef) :
 	#on affiche les onglets dynamiquement
 
 	global contenantonglets
+	global Frame4
 	
+	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
+	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
+	l4.pack(fill="both", expand="yes")
+	for z in range(0,len(fonctionValentin)) :
+		if(fonctionValentin[z][0]>0):
+			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
+		elif(fonctionValentin[z][0]<0):
+			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
+		
 	contenantonglets = Frame(fenetre, borderwidth=2)
-	contenantonglets.pack(side=RIGHT, padx=50, pady=50)
+	contenantonglets.pack(side=TOP, padx=50, pady=50)
 	onglets = ttk.Notebook(contenantonglets)
 
 
 	for k in range(i) :
 		longlets.append(ttk.Frame(onglets))
 		onglets.add(longlets[k], text="Tronçon" + str(k+1))
-		lbuttons.append(Button(longlets[k], text="Sauvegarder"))
-		lbuttons[k].pack(side=BOTTOM)
 
 		contenantfigs.append(Canvas(longlets[k], borderwidth=2))
 		contenantfigs[k].pack(padx=10, pady=10)
+		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
+		lbuttons[k].pack(side=BOTTOM)
 		for l in range(j) :
 			#créer des labels pour contenir les fig
 			canvas = FigureCanvasTkAgg(tabfig[k][l], master=contenantfigs[k])
@@ -69,10 +83,11 @@ def graph(csvan, csvdyn, csvdef) :
 			#a verifier si ça marche qd plusieurs tabs par onglets
 
 	onglets.pack(side=BOTTOM, expand=1, fill="both")
+
 	fenetre.update()
 
 
-def reinit(tab, frame) :
+def reinit(tab, frame, frame2) :
 	#on supprime le contenu du tableau de figures
 	for i in range(tab.shape[0]) :
 		for j in range(tab.shape[1]) :
@@ -80,6 +95,8 @@ def reinit(tab, frame) :
 
 	#on supprime la frame qui les affiche
 	frame.destroy()
+	#onsupprime le résultat
+	frame2.destroy()
 
 	#on supprime le nom des csv
 	for i in range(len(listel)) :
@@ -165,7 +182,7 @@ bouton8.pack()
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
 bouton9.pack()
 
-bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets))
+bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, Frame4))
 bouton10.pack()
 
 
