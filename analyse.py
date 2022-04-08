@@ -100,7 +100,7 @@ def vitesseScoreMoyCalc(df1,df2):
     return np.abs(df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy()).mean()
 
 #renvoi le score de proximité de df avec df1 et df2
-# df1 > 0 et df2 < 0
+#out : si < 0 , le style df1 est le plus ressemblant, si > 0 c'est le stle df2
 def score(df,df1,df2):
     ndf1 = createClosestD(df,df1)
     ndf2 = createClosestD(df, df2)
