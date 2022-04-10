@@ -11,6 +11,14 @@ def calcVitesse(df):
     tdf.insert(0, 'Vitesse', np.sign(tdf.get('[00].VehicleUpdate-speed.001'))*np.sqrt(tdf.get('[00].VehicleUpdate-speed.001')**2 + tdf.get('[00].VehicleUpdate-speed.002')**2 + tdf.get('[00].VehicleUpdate-speed.003')**2))
     return tdf
 
+#calcule l'acceleration de la voiture 
+#in: dframe
+#out: nouveau dataframe avec insertion de l'acceleration
+def calcAccel(df):
+    tdf = df.fillna(value=0)
+    tdf.insert(0, 'Acceleration', np.sign(tdf.get('[00].VehicleUpdate-accel.001'))*np.sqrt(tdf.get('[00].VehicleUpdate-accel.001')**2 + tdf.get('[00].VehicleUpdate-accel.002')**2 + tdf.get('[00].VehicleUpdate-accel.003')**2))
+    return tdf
+
 #calcule la distance parcourue de la voiture du début du dataframe à la fin
 #Colonne panda 'Vitesse' doit être présente
 #in: dframe
@@ -21,14 +29,26 @@ def calcDistance(df):
     return tdf
 
 #calcule le schema de la courbe de vitesse
-def plotVitesse(dfAn, dfAgg, dfDef, glabel):
+def plotVitesse(dfAn, dfAgg, dfDef, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
     fig = plt.figure(glabel)
-    plt.plot(dfAn['distance'], dfAn['Vitesse'], label='User', color='blue')
-    plt.plot(dfAgg['distance'], dfAgg['Vitesse'], label='Aggresiv', color='red')
-    plt.plot(dfDef['distance'], dfDef['Vitesse'], label = 'Cautious', color = 'green')
+    plt.plot(dfAn['distance'], dfAn['Vitesse'], label = label0, color = 'blue')
+    plt.plot(dfAgg['distance'], dfAgg['Vitesse'], label = label1, color = 'red')
+    plt.plot(dfDef['distance'], dfDef['Vitesse'], label = label2, color = 'green')
     plt.legend()
     plt.xlabel('Distance m')
     plt.ylabel('Vitesse m/s')
+    plt.close(fig)
+    return fig
+
+#calcule le schema de la courbe d'acceleration
+def plotAcceleration(df0, df1, df2, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
+    fig = plt.figure(glabel)
+    plt.plot(df0['distance'], df0['Acceleration'], label = label0, color = 'blue')
+    plt.plot(df1['distance'], df1['Acceleration'], label = label1, color = 'red')
+    plt.plot(df2['distance'], df2['Acceleration'], label = label2, color = 'green')
+    plt.legend()
+    plt.xlabel('Distance m')
+    plt.ylabel('Acceleration m/s²')
     plt.close(fig)
     return fig
 
@@ -109,7 +129,7 @@ def score(df,df1,df2):
 #renvoie les scores des vitesses poour chaques tronçons 
 def get_score(dfa, df1, df2):
     csvs = [dfa, df1, df2]
-    DV = [calcDistance(calcVitesse(x)) for x in csvs]
+    DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
     tronc = np.transpose([parse(x) for x in DV])
     return [[score(x[0], x[1], x[2])] for x in tronc]
 
@@ -117,7 +137,7 @@ def get_score(dfa, df1, df2):
 #TODO multi paramêtres et multi tronçons
 def plot_graph(dfAn, dfAgg, dfDef):
     csvs = [dfAn, dfAgg, dfDef]
-    DV = [calcDistance(calcVitesse(x)) for x in csvs]
+    DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
     tronc = np.transpose([parse(x) for x in DV])
     ids = [x for x in range(len(tronc))]
-    return [[plotVitesse(x[0], x[1], x[2], id)] for (x,id) in zip(tronc,ids)]
+    return [[plotVitesse(x[0], x[1], x[2], id),plotAcceleration(x[0], x[1], x[2], id+100)] for (x,id) in zip(tronc,ids)]
