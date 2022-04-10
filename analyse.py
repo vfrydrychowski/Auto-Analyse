@@ -116,15 +116,15 @@ def createClosestD(df1,df2):
 
 #fonction de calcul de proximité basique des courbes de vitesses
 #in deux dataframes indexés sur 'distance'. Doivent contenir le champs 'Vitesse'
-def vitesseScoreMoyCalc(df1,df2):
-    return np.abs(df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy()).mean()
+def vitesseMSE(df1,df2):
+    return ((df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy())**2).mean()
 
 #renvoi le score de proximité de df avec df1 et df2
 #out : si < 0 , le style df1 est le plus ressemblant, si > 0 c'est le stle df2
 def score(df,df1,df2):
     ndf1 = createClosestD(df,df1)
     ndf2 = createClosestD(df, df2)
-    return vitesseScoreMoyCalc(df,ndf1) - vitesseScoreMoyCalc(df,ndf2)
+    return vitesseMSE(df,ndf1) - vitesseMSE(df,ndf2)
 
 #renvoie les scores des vitesses poour chaques tronçons 
 def get_score(dfa, df1, df2):
