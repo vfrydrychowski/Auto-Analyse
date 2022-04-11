@@ -10,6 +10,7 @@ import pandas as pd
 import analyse as an
 import numpy as np
 from PIL import Image
+from collections import namedtuple
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
@@ -31,10 +32,9 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	Label(listel[-1], text=s[-1]).pack()
 	
 
-def save(tab) :
-	for i in range(len(tab)) :
-		for j in range(len(tab[0])) :
-			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
+def save(tab, i) :
+	for j in range(len(tab[0])) :
+		tab[i][j].savefig("tab"+str(i)+"."+str(j)+".png")
 
 def graph(csvan, csvdyn, csvdef) :
 
@@ -51,7 +51,7 @@ def graph(csvan, csvdyn, csvdef) :
 	#on affiche les onglets dynamiquement
 
 	global contenantonglets
-	global Frame4
+	global l4
 	
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
@@ -73,7 +73,9 @@ def graph(csvan, csvdyn, csvdef) :
 
 		contenantfigs.append(Canvas(longlets[k], borderwidth=2))
 		contenantfigs[k].pack(padx=10, pady=10)
-		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
+		var = namedtuple('cst', ['var'])
+		cste = var(k)
+		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig, cste.var)))
 		lbuttons[k].pack(side=BOTTOM)
 		for l in range(j) :
 			#créer des labels pour contenir les fig
@@ -182,7 +184,7 @@ bouton8.pack()
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
 bouton9.pack()
 
-bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, Frame4))
+bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
 bouton10.pack()
 
 
