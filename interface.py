@@ -51,7 +51,7 @@ def graph(csvan, csvdyn, csvdef) :
 	#on affiche les onglets dynamiquement
 
 	global contenantonglets
-	global Frame4
+	global l4
 	
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
@@ -63,7 +63,7 @@ def graph(csvan, csvdyn, csvdef) :
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
 		
 	contenantonglets = Frame(fenetre, borderwidth=2)
-	contenantonglets.pack(side=TOP, padx=50, pady=50)
+	contenantonglets.pack(side=TOP, padx=5, pady=5)
 	onglets = ttk.Notebook(contenantonglets)
 
 
@@ -72,7 +72,8 @@ def graph(csvan, csvdyn, csvdef) :
 		onglets.add(longlets[k], text="Tronçon" + str(k+1))
 
 		contenantfigs.append(Canvas(longlets[k], borderwidth=2))
-		contenantfigs[k].pack(padx=10, pady=10)
+		contenantfigs[k].pack(padx=2, pady=2)
+
 		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
 		lbuttons[k].pack(side=BOTTOM)
 		for l in range(j) :
@@ -182,7 +183,7 @@ bouton8.pack()
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
 bouton9.pack()
 
-bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, Frame4))
+bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
 bouton10.pack()
 
 

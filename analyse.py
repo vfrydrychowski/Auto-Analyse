@@ -30,7 +30,7 @@ def calcDistance(df):
 
 #calcule le schema de la courbe de vitesse
 def plotVitesse(dfAn, dfAgg, dfDef, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
-    fig = plt.figure(glabel)
+    fig = plt.figure(glabel, figsize=(5,3.2))
     plt.plot(dfAn['distance'], dfAn['Vitesse'], label = label0, color = 'blue')
     plt.plot(dfAgg['distance'], dfAgg['Vitesse'], label = label1, color = 'red')
     plt.plot(dfDef['distance'], dfDef['Vitesse'], label = label2, color = 'green')
@@ -42,7 +42,7 @@ def plotVitesse(dfAn, dfAgg, dfDef, glabel, label0 = 'User', label1 = 'style1', 
 
 #calcule le schema de la courbe d'acceleration
 def plotAcceleration(df0, df1, df2, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
-    fig = plt.figure(glabel)
+    fig = plt.figure(glabel, figsize=(5,3.2))
     plt.plot(df0['distance'], df0['Acceleration'], label = label0, color = 'blue')
     plt.plot(df1['distance'], df1['Acceleration'], label = label1, color = 'red')
     plt.plot(df2['distance'], df2['Acceleration'], label = label2, color = 'green')
