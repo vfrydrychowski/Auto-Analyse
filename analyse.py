@@ -135,9 +135,9 @@ def get_score(dfa, df1, df2):
 
 #calcul le tableau de grtaphiques tronçons*features
 #TODO multi paramêtres et multi tronçons
-def plot_graph(dfAn, dfAgg, dfDef):
+def plot_graph(dfAn, dfAgg, dfDef,label0 = 'User', label1 = 'style1', label2 = 'style2'):
     csvs = [dfAn, dfAgg, dfDef]
     DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
     tronc = np.transpose([parse(x) for x in DV])
     ids = [x for x in range(len(tronc))]
-    return [[plotVitesse(x[0], x[1], x[2], id),plotAcceleration(x[0], x[1], x[2], id+100)] for (x,id) in zip(tronc,ids)]
+    return [[plotVitesse(x[0], x[1], x[2], id, label0, label1, label2),plotAcceleration(x[0], x[1], x[2], id+100, label0, label1, label2)] for (x,id) in zip(tronc,ids)]
