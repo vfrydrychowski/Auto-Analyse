@@ -9,14 +9,17 @@ import string
 import pandas as pd
 import analyse as an
 import numpy as np
-from tkinterhtml import HtmlFrame
+#from tkinterhtml import HtmlFrame
 
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
 global e1, e2, e3
+global boutone1, boutone2, boutone3
 global res
 res=["User", "Style1", "Style2"]
+global parser
+parser = "Parser"
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
@@ -24,56 +27,51 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	s = filename.split("/")
 
 	#on place notre label à côté du bouton correspondant
+	string1=None
+	string2=None
+	string3=None
 	if(nom_frame == 'Frame2_1') :
 		listel.append(LabelFrame(Frame2_1, padx=2, pady=2))
 		nom1 = Label(Frame2_1, text='Nom de la courbe')
 		nom1.pack(side=TOP)
-		e1 = Entry(Frame2_1, textvariable=string)
+		e1 = Entry(Frame2_1, textvariable=string1)
 		e1.pack(side=TOP)
-		boutone1 = Button(Frame2_1, text = "Valider", command=lambda: getEntry(e1, Frame2_1))
+		boutone1 = Button(Frame2_1, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
 		boutone1.pack(side=TOP)
 	elif(nom_frame == 'Frame2_2') :
 		listel.append(LabelFrame(Frame2_2, padx=5, pady=5))
 		nom2 = Label(Frame2_2, text='Nom de la courbe')
 		nom2.pack(side=TOP)
-		e2 = Entry(Frame2_2, textvariable=string)
+		e2 = Entry(Frame2_2, textvariable=string2)
 		e2.pack(side=TOP)
-		boutone2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, Frame2_2))
+		boutone2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, 'Frame2_2'))
 		boutone2.pack(side=TOP)
 	else :
 		listel.append(LabelFrame(Frame2_3, padx=5, pady=5))
 		nom3 = Label(Frame2_3, text='Nom de la courbe')
 		nom3.pack(side=TOP)
-		e3 = Entry(Frame2_3, textvariable=string)
+		e3 = Entry(Frame2_3, textvariable=string3)
 		e3.pack(side=TOP)
-		boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, Frame2_3))
+		boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Frame2_3'))
 		boutone3.pack(side=TOP)
 
 	listel[-1].pack(fill="both", side=LEFT, expand="no")
 	Label(listel[-1], text=s[-1]).pack(side=RIGHT)
-	#nom1.pack(side=LEFT)
-	#if(nom_frame == 'Frame2_1') :
-	#	e1.pack()
-	#elif(nom_frame == 'Frame2_2') :
-	#	e2.pack()
-	#elif(nom_frame == 'Frame2_3') :
-	#	e3.pack()
-	
-	#bouton.pack(side=RIGHT)
 
 
 def getEntry(entry, nom_frame) :
 	if(nom_frame == 'Frame2_1') :
-		print(res[0])
 		res[0] = entry.get()
-		print(res[0])
+		print("z")
 	elif(nom_frame == 'Frame2_2') :
 		res[1] = entry.get()
-		print(res[1])
+		print("e")
 	elif(nom_frame == 'Frame2_3') :
 		res[2] = entry.get()
+		print("r")
 	else :
-		print(entry.get())
+		parser = entry.get()
+		print("t")
 	
 
 def save(tab) : #sauvegarder les graphes
@@ -81,11 +79,11 @@ def save(tab) : #sauvegarder les graphes
 		for j in range(len(tab[0])) :
 			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
 
-def graph(csvan, csvdyn, csvdef) :
-
+def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
+	print("a" + res0)
 	#on récupère la liste de figures
 	global tabfig
-	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef))
+	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef, res0, res1, res2, parser))
 	i,j = tabfig.shape
 
 	contenantfigs = []
@@ -201,7 +199,7 @@ bouton3.pack()
 bouton4 = Checkbutton(Frame3, text="accélération")
 bouton4.pack()
 
-bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
+bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
 bouton9.pack()
 
 bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
