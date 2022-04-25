@@ -21,14 +21,26 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 
 	#on place notre label à côté du bouton correspondant
 	if(nom_frame == 'Frame2_1') :
-		listel.append(LabelFrame(Frame2_1, padx=5, pady=5))
+		listel.append(LabelFrame(Frame2_1, padx=2, pady=2))
+		nom1 = Label(Frame2_1, text='Nom de la courbe')
+		e1 = Entry(Frame2_1, textvariable=string)
+		bouton = Button(Frame2_1, text = "Valider", command=lambda: getEntry(Frame2_1))
 	elif(nom_frame == 'Frame2_2') :
 		listel.append(LabelFrame(Frame2_2, padx=5, pady=5))
+		nom1 = Label(Frame2_2, text='Nom de la courbe')
+		e1 = Entry(Frame2_2, textvariable=string)
+		bouton = Button(Frame2_2, text = "Valider", command=lambda: getEntry(Frame2_2))
 	else :
 		listel.append(LabelFrame(Frame2_3, padx=5, pady=5))
+		nom1 = Label(Frame2_3, text='Nom de la courbe')
+		e1 = Entry(Frame2_3, textvariable=string)
+		bouton = Button(Frame2_3, text = "Valider", command=lambda: getEntry(Frame2_3))
 
-	listel[-1].pack(fill="both", side="right", expand="no")
-	Label(listel[-1], text=s[-1]).pack()
+	listel[-1].pack(fill="both", side=LEFT, expand="no")
+	Label(listel[-1], text=s[-1]).pack(side=RIGHT)
+	nom1.pack(side=LEFT)
+	e1.pack()
+	bouton.pack(side=RIGHT)
 	
 
 def save(tab) : #sauvegarder les graphes
