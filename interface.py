@@ -9,7 +9,7 @@ import string
 import pandas as pd
 import analyse as an
 import numpy as np
-from PIL import Image
+#from PIL import Image
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
@@ -57,9 +57,9 @@ def graph(csvan, csvdyn, csvdef) :
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	for z in range(0,len(fonctionValentin)) :
-		if(fonctionValentin[z][0]>0):
+		if(fonctionValentin[z][0]<0):
 			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
-		elif(fonctionValentin[z][0]<0):
+		elif(fonctionValentin[z][0]>0):
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
 		
 	contenantonglets = Frame(fenetre, borderwidth=2)
