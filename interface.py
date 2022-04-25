@@ -14,7 +14,7 @@ import numpy as np
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
-global e1, e2, e3
+global e2, e3
 global boutone1, boutone2, boutone3
 global res
 res=["User", "Style1", "Style2"]
@@ -27,36 +27,31 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	s = filename.split("/")
 
 	#on place notre label à côté du bouton correspondant
-	string1=None
 	string2=None
 	string3=None
-	if(nom_frame == 'Frame2_1') :
+	if(nom_frame == 'Frame2_1') : #on pack les éléments pour changer nom courbe1
 		listel.append(LabelFrame(Frame2_1, padx=2, pady=2))
-		nom1 = Label(Frame2_1, text='Nom de la courbe')
 		nom1.pack(side=TOP)
-		e1 = Entry(Frame2_1, textvariable=string1)
 		e1.pack(side=TOP)
-		boutone1 = Button(Frame2_1, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
 		boutone1.pack(side=TOP)
-	elif(nom_frame == 'Frame2_2') :
+
+	elif(nom_frame == 'Frame2_2') : #courbe2
 		listel.append(LabelFrame(Frame2_2, padx=5, pady=5))
-		nom2 = Label(Frame2_2, text='Nom de la courbe')
 		nom2.pack(side=TOP)
-		e2 = Entry(Frame2_2, textvariable=string2)
 		e2.pack(side=TOP)
-		boutone2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, 'Frame2_2'))
 		boutone2.pack(side=TOP)
-	else :
+
+	else : #courbe3
 		listel.append(LabelFrame(Frame2_3, padx=5, pady=5))
-		nom3 = Label(Frame2_3, text='Nom de la courbe')
 		nom3.pack(side=TOP)
-		e3 = Entry(Frame2_3, textvariable=string3)
 		e3.pack(side=TOP)
-		boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Frame2_3'))
 		boutone3.pack(side=TOP)
 
 	listel[-1].pack(fill="both", side=LEFT, expand="no")
 	Label(listel[-1], text=s[-1]).pack(side=RIGHT)
+
+	if(csvan is not None and csvdyn is not None and csvdef is not None) :
+		bouton9.pack()
 
 
 def getEntry(entry, nom_frame) :
@@ -127,6 +122,9 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 	onglets.pack(side=BOTTOM, expand=1, fill="both")
 
+	#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
+	bouton9.pack_forget()
+
 	fenetre.update()
 
 
@@ -144,6 +142,20 @@ def reinit(tab, frame, frame2) :
 	#on supprime le nom des csv
 	for i in range(len(listel)) :
 		listel[i].destroy()
+
+	
+
+	boutone1.pack_forget()
+	nom1.pack_forget()
+	e1.pack_forget()
+
+	boutone2.pack_forget()
+	nom2.pack_forget()
+	e2.pack_forget()
+
+	boutone3.pack_forget()
+	nom3.pack_forget()
+	e3.pack_forget()
 
 	#on met à jour la fenêtre
 	fenetre.update()
@@ -200,10 +212,23 @@ bouton4 = Checkbutton(Frame3, text="accélération")
 bouton4.pack()
 
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
-bouton9.pack()
 
 bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
 bouton10.pack() 
+
+#changer nom courbe
+string1 = None
+nom1 = Label(Frame2_1, text='Nom de la courbe')
+e1 = Entry(Frame2_1, textvariable=string1)
+boutone1 = Button(Frame2_1, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
+string2 = None
+nom2 = Label(Frame2_2, text='Nom de la courbe')
+e2 = Entry(Frame2_2, textvariable=string2)
+boutone2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, 'Frame2_2'))
+string3 = None
+nom3 = Label(Frame2_3, text='Nom de la courbe')
+e3 = Entry(Frame2_3, textvariable=string3)
+boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Frame2_3'))
 
 #changer le préfixe du parser
 nomp = Label(Frame2, text='Changer le préfixe de parsing')
@@ -214,6 +239,6 @@ boutonep = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2)
 boutonep.pack(side=TOP, padx=10, pady=10)
 
 boutondoc = Button(Frame2, text="Ouvrir la documentation", command=lambda: doc())
-boutondoc.pack()
+#boutondoc.pack()
 
 fenetre.mainloop()
