@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from torch import softmax
-import scipy.special.softmax
+import scipy.special as spef
 import re
 
 #calcule la vitesse de la voiture 
@@ -119,12 +118,12 @@ def createClosestD(df1,df2):
 #fonction de calcul de proximité basique des courbes de vitesses
 #in deux dataframes indexés sur 'distance'. Doivent contenir le champs 'Vitesse'
 def vitesseMSE(df1,df2):
-    return softmax(((df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy())**2).mean())
+    return spef.softmax(((df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy())**2).mean())
 
 #fonction de calcul de proximité basique des courbes d'accceleration
 #in deux dataframes indexés sur 'distance'. Doivent contenir le champs 'Acceleration'
 def accelerationMSE(df1,df2):
-    return softmax(((df1['Acceleration'].to_numpy() - df2['Acceleration'].to_numpy())**2).mean())
+    return spef.softmax(((df1['Acceleration'].to_numpy() - df2['Acceleration'].to_numpy())**2).mean())
 
 #renvoi le score de proximité de df avec df1 et df2
 #out : si < 0 , le style df1 est le plus ressemblant, si > 0 c'est le stle df2
