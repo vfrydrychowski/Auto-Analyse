@@ -10,7 +10,6 @@ import pandas as pd
 import analyse as an
 import numpy as np
 
-
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
 
