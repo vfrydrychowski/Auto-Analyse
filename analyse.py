@@ -3,6 +3,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 
+
+gdfa = None #dataframe utilisateur  
+gdf1 = None #dataframe style1
+gdf2 = None #dataframe style2
+
 #calcule la vitesse de la voiture 
 #in: dframe
 #out: nouveau dataframe avec insertion de la vitesse
@@ -111,7 +116,23 @@ def get_score(dfa, df1, df2):
     csvs = [dfa, df1, df2]
     DV = [calcDistance(calcVitesse(x)) for x in csvs]
     tronc = np.transpose([parse(x) for x in DV])
+    
+    #mise à jour des tableau pour le téléchargement des données
+    global gdfa
+    gdfa = dfa
+    global gdf1
+    gdf1 = df1
+    global gdf2 
+    gdf2 = df2
+    
     return [[score(x[0], x[1], x[2])] for x in tronc]
+
+#retourne les tableau de données utilisées
+def get_data():
+    global gdfa
+    global gdf1
+    global gdf2
+    return gdfa, gdf1, gdf2
 
 #calcul le tableau de grtaphiques tronçons*features
 #TODO multi paramêtres et multi tronçons
