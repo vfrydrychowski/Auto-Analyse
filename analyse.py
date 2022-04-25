@@ -55,8 +55,8 @@ def plotAcceleration(df0, df1, df2, glabel, label0 = 'User', label1 = 'style1', 
 #reconnait une string comme le nom d'un délimiteur de tronçons
 #in: une string
 #out: un bool
-def filter(string):
-    if re.match("Parser\d*", string) != None:
+def filter(string, parseString = "Parser"):
+    if re.match(parseString + "\d*", string) != None:
         return True
     else:
         return False
@@ -85,8 +85,8 @@ def getIndex(data, i):
 
 #à partir d'un dataframe, découpe en tableaux de dataframes en fonctions des triggers
 #TODO exeption de nb impair de triggers
-def parse(dataf):
-    df = dataf[[filter(str(x)) for x in dataf['TriggeredState-name'].fillna(value="0")]]#filtration des bon formats de parsers
+def parse(dataf, parseString = "Parser"):
+    df = dataf[[filter(str(x), parseString) for x in dataf['TriggeredState-name'].fillna(value="0")]]#filtration des bon formats de parsers
     df = trigToInt(df)
     dim = len(df['TriggeredState-name'].unique()) #calcul du nombre de triggers
     
@@ -127,17 +127,17 @@ def score(df,df1,df2):
     return vitesseScoreMoyCalc(df,ndf1) - vitesseScoreMoyCalc(df,ndf2)
 
 #renvoie les scores des vitesses poour chaques tronçons 
-def get_score(dfa, df1, df2):
+def get_score(dfa, df1, df2, parseString = "Parser"):
     csvs = [dfa, df1, df2]
     DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
-    tronc = np.transpose([parse(x) for x in DV])
+    tronc = np.transpose([parse(x, parseString) for x in DV])
     return [[score(x[0], x[1], x[2])] for x in tronc]
 
 #calcul le tableau de grtaphiques tronçons*features
 #TODO multi paramêtres et multi tronçons
-def plot_graph(dfAn, dfAgg, dfDef,label0 = 'User', label1 = 'style1', label2 = 'style2'):
+def plot_graph(dfAn, dfAgg, dfDef,label0 = 'User', label1 = 'style1', label2 = 'style2', parseString = "Parser"):
     csvs = [dfAn, dfAgg, dfDef]
     DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
-    tronc = np.transpose([parse(x) for x in DV])
+    tronc = np.transpose([parse(x, parseString) for x in DV])
     ids = [x for x in range(len(tronc))]
     return [[plotVitesse(x[0], x[1], x[2], id, label0, label1, label2),plotAcceleration(x[0], x[1], x[2], id+100, label0, label1, label2)] for (x,id) in zip(tronc,ids)]
