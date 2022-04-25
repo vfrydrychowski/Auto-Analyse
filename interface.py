@@ -17,11 +17,8 @@ global res
 res=["User", "Style1", "Style2"]
 global parser
 parser = "Parser"
-
 tabfig = np.array([])
-
 contenantonglets = None
-
 l4 = None
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
@@ -96,14 +93,15 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 	#global l4
 	
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
+	print(fonctionValentin)
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	#affichage des résultats pour chaque tronçon
 	for z in range(0,len(fonctionValentin)) :
 		if(fonctionValentin[z][0]<0):
 			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
-		elif(fonctionValentin[z][0]>0):
-			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
+		#elif(fonctionValentin[z][0]>0):
+		Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
 		
 	contenantonglets = Frame(fenetre, borderwidth=2)
 	contenantonglets.pack(side=TOP, padx=5, pady=5)
@@ -205,6 +203,16 @@ def valider() :
 	a = entreeacc.get()
 	for i in range(tabfig.shape[0]) :
 		l.append(listptroncons[i].get())
+	reinit(tabfig, contenantonglets, l4)
+	fonctionValentin = an.get_score(csvan, csvdyn, csvdef, a, v)
+	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
+	l4.pack(fill="both", expand="yes")
+	#affichage des résultats pour chaque tronçon
+	for z in range(0,len(fonctionValentin)) :
+		if(fonctionValentin[z][0]<0):
+			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
+		elif(fonctionValentin[z][0]>0):
+			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
 
 
 fenetre = Tk()
@@ -264,11 +272,11 @@ boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Fram
 
 #changer le préfixe du parser
 nomp = Label(Frame2, text='Changer le préfixe de parsing')
-nomp.pack(side=TOP, padx=10, pady=10)
+#nomp.pack(side=TOP, padx=10, pady=10)
 ep = Entry(Frame2, textvariable=string)
-ep.pack(side=TOP, padx=2, pady=2)
+#ep.pack(side=TOP, padx=2, pady=2)
 boutonep = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2))
-boutonep.pack(side=TOP, padx=10, pady=10)
+#boutonep.pack(side=TOP, padx=10, pady=10)
 
 boutonpoids = Button(Frame2, text="Changer les poids", command=lambda: changerPoids())
 boutonpoids.pack()
