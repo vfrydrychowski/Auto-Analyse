@@ -9,7 +9,7 @@ import string
 import pandas as pd
 import analyse as an
 import numpy as np
-#from PIL import Image
+
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
@@ -31,7 +31,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	Label(listel[-1], text=s[-1]).pack()
 	
 
-def save(tab) :
+def save(tab) : #sauvegarder les graphes
 	for i in range(len(tab)) :
 		for j in range(len(tab[0])) :
 			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
@@ -43,19 +43,18 @@ def graph(csvan, csvdyn, csvdef) :
 	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef))
 	i,j = tabfig.shape
 
-	#global contenantfigs
 	contenantfigs = []
-
 	longlets = []
 	lbuttons = []
-	#on affiche les onglets dynamiquement
 
+	#on affiche les onglets dynamiquement
 	global contenantonglets
 	global l4
 	
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
+	#affichage des résultats pour chaque tronçon
 	for z in range(0,len(fonctionValentin)) :
 		if(fonctionValentin[z][0]<0):
 			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
@@ -66,7 +65,7 @@ def graph(csvan, csvdyn, csvdef) :
 	contenantonglets.pack(side=TOP, padx=5, pady=5)
 	onglets = ttk.Notebook(contenantonglets)
 
-
+	#affichage des graphes sur les tronçons
 	for k in range(i) :
 		longlets.append(ttk.Frame(onglets))
 		onglets.add(longlets[k], text="Tronçon" + str(k+1))
@@ -110,22 +109,7 @@ def reinit(tab, frame, frame2) :
 fenetre = Tk()
 fenetre.geometry("900x600")
 
-#Canvas(fenetre, width=250, height=100, bg='white').pack(side=TOP, padx=5, pady=5)
-
-#l = LabelFrame(fenetre, text="Documentation", bg='ivory', fg='black', padx=20, pady=20)
-#l.pack(side=BOTTOM, fill="both", expand="yes")
-#l2 = Label(l, text=content, bg='ivory', fg='black').pack(side=BOTTOM, padx=10, pady=10)
-
-#scroll_bar = Scrollbar(l)
-#scroll_bar.pack(side=RIGHT, fill=Y)
-
-#text = Text(l, yscrollcommand=scroll_bar.set, bg='ivory', fg='black', height=10, width=10)
-#text.insert(INSERT, content)
-#text.pack()
-
-#scroll_bar.config(command=text.yview)
-
-#contenantonglets = Frame(fenetre, borderwidth=2)
+#création des frames
 
 Frame1 = Frame(fenetre, borderwidth=2)
 Frame1.pack(side=LEFT, padx=50, pady=50)
@@ -167,18 +151,6 @@ bouton3.pack()
 
 bouton4 = Checkbutton(Frame3, text="accélération")
 bouton4.pack()
-
-bouton5 = Checkbutton(Frame3, text="_____")
-bouton5.pack()
-
-bouton6 = Checkbutton(Frame3, text="_____")
-bouton6.pack()
-
-bouton7 = Checkbutton(Frame3, text="_____")
-bouton7.pack()
-
-bouton8 = Checkbutton(Frame3, text="_____")
-bouton8.pack()
 
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef))
 bouton9.pack()
