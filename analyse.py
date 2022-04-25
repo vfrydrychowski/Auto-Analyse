@@ -4,6 +4,11 @@ import matplotlib.pyplot as plt
 import scipy.special as spef
 import re
 
+
+gdfa = None #dataframe utilisateur  
+gdf1 = None #dataframe style1
+gdf2 = None #dataframe style2
+
 #calcule la vitesse de la voiture 
 #in: dframe
 #out: nouveau dataframe avec insertion de la vitesse
@@ -31,7 +36,7 @@ def calcDistance(df):
 
 #calcule le schema de la courbe de vitesse
 def plotVitesse(dfAn, dfAgg, dfDef, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
-    fig = plt.figure(glabel)
+    fig = plt.figure(glabel, figsize=(5,3.2))
     plt.plot(dfAn['distance'], dfAn['Vitesse'], label = label0, color = 'blue')
     plt.plot(dfAgg['distance'], dfAgg['Vitesse'], label = label1, color = 'red')
     plt.plot(dfDef['distance'], dfDef['Vitesse'], label = label2, color = 'green')
@@ -43,7 +48,7 @@ def plotVitesse(dfAn, dfAgg, dfDef, glabel, label0 = 'User', label1 = 'style1', 
 
 #calcule le schema de la courbe d'acceleration
 def plotAcceleration(df0, df1, df2, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
-    fig = plt.figure(glabel)
+    fig = plt.figure(glabel, figsize=(5,3.2))
     plt.plot(df0['distance'], df0['Acceleration'], label = label0, color = 'blue')
     plt.plot(df1['distance'], df1['Acceleration'], label = label1, color = 'red')
     plt.plot(df2['distance'], df2['Acceleration'], label = label2, color = 'green')
@@ -137,7 +142,23 @@ def get_score(dfa, df1, df2, coeffAcc = 1, coefVit = 1):
     csvs = [dfa, df1, df2]
     DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
     tronc = np.transpose([parse(x) for x in DV])
+
+    #mise à jour des tableau pour le téléchargement des données
+    global gdfa
+    gdfa = dfa
+    global gdf1
+    gdf1 = df1
+    global gdf2 
+    gdf2 = df2
+    
     return [[score(x[0], x[1], x[2], coeffAcc, coefVit)] for x in tronc]
+
+#retourne les tableau de données utilisées
+def get_data():
+    global gdfa
+    global gdf1
+    global gdf2
+    return gdfa, gdf1, gdf2
 
 #calcul le tableau de grtaphiques tronçons*features
 #TODO multi paramêtres et multi tronçons
