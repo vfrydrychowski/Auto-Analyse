@@ -166,10 +166,46 @@ def reinit(tab, frame, frame2) :
 	#on met à jour la fenêtre
 	fenetre.update()
 
-def doc() :
-	docu = Toplevel(fenetre)
-	frame = HtmlFrame(root, horizontal_scrollbar="auto")
-	frame.set_content(urllib.request.urlopen(""))
+entreevit = ""
+entreeacc = ""
+listptroncons = []
+v = 0
+a = 0
+l = []
+
+def changerPoids() :
+	page = Toplevel(fenetre)
+	global entreevit, entreeacc, listptroncons
+	vit = StringVar()
+	nomv = Label(page, text='Poids vitesse')
+	nomv.pack(side=TOP, padx=10, pady=10)
+	entreevit = Entry(page, textvariable=vit, width=20)
+	entreevit.pack()
+	acc = StringVar()
+	noma = Label(page, text='Poids accélérations')
+	noma.pack(side=TOP, padx=10, pady=10)
+	entreeacc = Entry(page, textvariable=acc, width=20)
+	entreeacc.pack()
+	listptroncons = []
+	for i in range(tabfig.shape[0]) :
+		value = StringVar()
+		nomval = Label(page, text='Poids tronçon'+str(i))
+		nomval.pack(side=TOP, padx=10, pady=10)
+		entree = Entry(page, textvariable=value, width=20)
+		entree.pack()
+		listptroncons.append(entree)
+
+	bouton = Button(page, text = "Valider", command=lambda: valider())
+	bouton.pack(side=BOTTOM, padx=5, pady=5)
+
+
+def valider() :
+	global v, a, l
+	v = entreevit.get()
+	a = entreeacc.get()
+	for i in range(tabfig.shape[0]) :
+		l.append(listptroncons[i].get())
+
 
 fenetre = Tk()
 fenetre.geometry("900x600")
@@ -181,8 +217,6 @@ Frame1.pack(side=LEFT, padx=50, pady=50)
 
 Frame2 = Frame(Frame1, borderwidth=2)
 Frame2.pack(side=TOP, padx=5, pady=5)
-
-Label(Frame2, text="CSV").pack(side=TOP, padx=5, pady=5)
 
 Frame2_1 = Frame(Frame2, borderwidth=2)
 Frame2_1.pack(padx=5, pady=5)
@@ -196,8 +230,6 @@ Frame2_3.pack(padx=5, pady=5)
 Frame3 = Frame(Frame1, borderwidth=2)
 Frame3.pack(padx=5, pady=5)
 
-Label(Frame3, text="Paramètres").pack(side=TOP, padx=5, pady=5)
-
 csvdyn = None 
 bouton = Button(Frame2_1, text = "Style 1", command=lambda: recupere('csvdyn', 'Frame2_1'))
 bouton.pack(side=LEFT, padx=5, pady=5)
@@ -210,12 +242,6 @@ bouton1.pack(side=LEFT, padx=5, pady=5)
 csvan = None
 bouton2 = Button(Frame2_3, text = "Csv à analyser", command=lambda: recupere('csvan', 'Frame2_3'))
 bouton2.pack(side=LEFT, padx=5, pady=5)
-
-bouton3 = Checkbutton(Frame3, text="vitesse")
-bouton3.pack()
-
-bouton4 = Checkbutton(Frame3, text="accélération")
-bouton4.pack()
 
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
 
@@ -244,7 +270,7 @@ ep.pack(side=TOP, padx=2, pady=2)
 boutonep = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2))
 boutonep.pack(side=TOP, padx=10, pady=10)
 
-boutondoc = Button(Frame2, text="Ouvrir la documentation", command=lambda: doc())
-#boutondoc.pack()
+boutonpoids = Button(Frame2, text="Changer les poids", command=lambda: changerPoids())
+boutonpoids.pack()
 
 fenetre.mainloop()
