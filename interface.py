@@ -14,12 +14,16 @@ import numpy as np
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
-global e2, e3
-global boutone1, boutone2, boutone3
 global res
 res=["User", "Style1", "Style2"]
 global parser
 parser = "Parser"
+
+tabfig = np.array([])
+
+contenantonglets = None
+
+l4 = None
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
@@ -77,7 +81,10 @@ def save(tab) : #sauvegarder les graphes
 def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 	print("a" + res0)
 	#on récupère la liste de figures
+	#global tabfig
 	global tabfig
+	global contenantonglets
+	global l4 
 	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef, res0, res1, res2, parser))
 	i,j = tabfig.shape
 
@@ -86,8 +93,8 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 	lbuttons = []
 
 	#on affiche les onglets dynamiquement
-	global contenantonglets
-	global l4
+	#global contenantonglets
+	#global l4
 	
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
@@ -129,22 +136,20 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 
 def reinit(tab, frame, frame2) :
+#si le tab n'est pas vide c'est qu'on a un affichage donc on le supprime
+	if(tab.ndim and tab.size) :
+		#on supprime la frame qui les affiche
+		frame.destroy()
+		#onsupprime le résultat
+		frame2.destroy()
+
 	#on supprime le contenu du tableau de figures
 	for i in range(tab.shape[0]) :
 		for j in range(tab.shape[1]) :
 			tab[i][j].clf()
 
-	#on supprime la frame qui les affiche
-	frame.destroy()
-	#onsupprime le résultat
-	frame2.destroy()
 
-	#on supprime le nom des csv
-	for i in range(len(listel)) :
-		listel[i].destroy()
-
-	
-
+#on enlève les cases pour les noms de courbes
 	boutone1.pack_forget()
 	nom1.pack_forget()
 	e1.pack_forget()
@@ -156,7 +161,9 @@ def reinit(tab, frame, frame2) :
 	boutone3.pack_forget()
 	nom3.pack_forget()
 	e3.pack_forget()
-
+	#on supprime le nom des csv
+	for i in range(len(listel)) :
+		listel[i].destroy()
 	#on met à jour la fenêtre
 	fenetre.update()
 
