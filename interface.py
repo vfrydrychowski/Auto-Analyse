@@ -9,10 +9,14 @@ import string
 import pandas as pd
 import analyse as an
 import numpy as np
+from tkinterhtml import HtmlFrame
 
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[]
+global e1, e2, e3
+global res
+res=["User", "Style1", "Style2"]
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
 	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
@@ -23,24 +27,53 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 	if(nom_frame == 'Frame2_1') :
 		listel.append(LabelFrame(Frame2_1, padx=2, pady=2))
 		nom1 = Label(Frame2_1, text='Nom de la courbe')
+		nom1.pack(side=TOP)
 		e1 = Entry(Frame2_1, textvariable=string)
-		bouton = Button(Frame2_1, text = "Valider", command=lambda: getEntry(Frame2_1))
+		e1.pack(side=TOP)
+		boutone1 = Button(Frame2_1, text = "Valider", command=lambda: getEntry(e1, Frame2_1))
+		boutone1.pack(side=TOP)
 	elif(nom_frame == 'Frame2_2') :
 		listel.append(LabelFrame(Frame2_2, padx=5, pady=5))
-		nom1 = Label(Frame2_2, text='Nom de la courbe')
-		e1 = Entry(Frame2_2, textvariable=string)
-		bouton = Button(Frame2_2, text = "Valider", command=lambda: getEntry(Frame2_2))
+		nom2 = Label(Frame2_2, text='Nom de la courbe')
+		nom2.pack(side=TOP)
+		e2 = Entry(Frame2_2, textvariable=string)
+		e2.pack(side=TOP)
+		boutone2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, Frame2_2))
+		boutone2.pack(side=TOP)
 	else :
 		listel.append(LabelFrame(Frame2_3, padx=5, pady=5))
-		nom1 = Label(Frame2_3, text='Nom de la courbe')
-		e1 = Entry(Frame2_3, textvariable=string)
-		bouton = Button(Frame2_3, text = "Valider", command=lambda: getEntry(Frame2_3))
+		nom3 = Label(Frame2_3, text='Nom de la courbe')
+		nom3.pack(side=TOP)
+		e3 = Entry(Frame2_3, textvariable=string)
+		e3.pack(side=TOP)
+		boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, Frame2_3))
+		boutone3.pack(side=TOP)
 
 	listel[-1].pack(fill="both", side=LEFT, expand="no")
 	Label(listel[-1], text=s[-1]).pack(side=RIGHT)
-	nom1.pack(side=LEFT)
-	e1.pack()
-	bouton.pack(side=RIGHT)
+	#nom1.pack(side=LEFT)
+	#if(nom_frame == 'Frame2_1') :
+	#	e1.pack()
+	#elif(nom_frame == 'Frame2_2') :
+	#	e2.pack()
+	#elif(nom_frame == 'Frame2_3') :
+	#	e3.pack()
+	
+	#bouton.pack(side=RIGHT)
+
+
+def getEntry(entry, nom_frame) :
+	if(nom_frame == 'Frame2_1') :
+		print(res[0])
+		res[0] = entry.get()
+		print(res[0])
+	elif(nom_frame == 'Frame2_2') :
+		res[1] = entry.get()
+		print(res[1])
+	elif(nom_frame == 'Frame2_3') :
+		res[2] = entry.get()
+	else :
+		print(entry.get())
 	
 
 def save(tab) : #sauvegarder les graphes
@@ -117,6 +150,10 @@ def reinit(tab, frame, frame2) :
 	#on met à jour la fenêtre
 	fenetre.update()
 
+def doc() :
+	docu = Toplevel(fenetre)
+	frame = HtmlFrame(root, horizontal_scrollbar="auto")
+	frame.set_content(urllib.request.urlopen(""))
 
 fenetre = Tk()
 fenetre.geometry("900x600")
@@ -168,7 +205,17 @@ bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, c
 bouton9.pack()
 
 bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
-bouton10.pack()
+bouton10.pack() 
 
+#changer le préfixe du parser
+nomp = Label(Frame2, text='Changer le préfixe de parsing')
+nomp.pack(side=TOP, padx=10, pady=10)
+ep = Entry(Frame2, textvariable=string)
+ep.pack(side=TOP, padx=2, pady=2)
+boutonep = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2))
+boutonep.pack(side=TOP, padx=10, pady=10)
+
+boutondoc = Button(Frame2, text="Ouvrir la documentation", command=lambda: doc())
+boutondoc.pack()
 
 fenetre.mainloop()
