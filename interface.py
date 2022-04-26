@@ -106,9 +106,9 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 			Label(l4, text="Tronçon "+str(z+1)+" : Style2").pack()
 	scoreglobal=an.get_score_global(fonctionValentin,[1]*len(fonctionValentin))
 	if(scoreglobal<0):	
-		Label(l4, text="Résultat global : style1").pack()
+		Label(l4, text="Résultat global : Style1").pack()
 	else:
-		Label(l4, text="Résultat global : style2").pack()
+		Label(l4, text="Résultat global : Style2").pack()
 
 		
 	contenantonglets = Frame(fenetre, borderwidth=2)
