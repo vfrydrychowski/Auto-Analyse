@@ -12,7 +12,7 @@ import numpy as np
 #from tkinterhtml import HtmlFrame
 
 global listel #liste contenant les labels des noms de fichiers csv
-listel=[]
+listel=[0,0,0]
 global res
 res=["User", "Style1", "Style2"]
 global parser
@@ -22,33 +22,44 @@ contenantonglets = None
 l4 = None
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
-	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
-	globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
-	s = filename.split("/")
 
 	#on place notre label à côté du bouton correspondant
-	string2=None
-	string3=None
 	if(nom_frame == 'Frame2_1') : #on pack les éléments pour changer nom courbe1
-		listel.append(LabelFrame(Frame2_1, padx=2, pady=2))
-		nom1.pack(side=TOP)
-		e1.pack(side=TOP)
-		boutone1.pack(side=TOP)
+		if(listel[0] == 0) : #si on a pas déjà choisi un fichier
+			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
+			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
+			s = filename.split("/")
+			listel[0] = LabelFrame(Frame2_1, padx=2, pady=2)
+			nom1.pack(side=TOP)
+			e1.pack(side=TOP)
+			boutone1.pack(side=TOP)
+			listel[0].pack(fill="both", side=LEFT, expand="no")
+			Label(listel[0], text=s[-1]).pack(side=RIGHT)
 
 	elif(nom_frame == 'Frame2_2') : #courbe2
-		listel.append(LabelFrame(Frame2_2, padx=5, pady=5))
-		nom2.pack(side=TOP)
-		e2.pack(side=TOP)
-		boutone2.pack(side=TOP)
+		if(listel[1] == 0) :
+			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
+			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
+			s = filename.split("/")
+			listel[1] = LabelFrame(Frame2_2, padx=5, pady=5)
+			nom2.pack(side=TOP)
+			e2.pack(side=TOP)
+			boutone2.pack(side=TOP)
+			listel[1].pack(fill="both", side=LEFT, expand="no")
+			Label(listel[1], text=s[-1]).pack(side=RIGHT)
 
 	else : #courbe3
-		listel.append(LabelFrame(Frame2_3, padx=5, pady=5))
-		nom3.pack(side=TOP)
-		e3.pack(side=TOP)
-		boutone3.pack(side=TOP)
+		if(listel[2] == 0) :
+			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
+			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
+			s = filename.split("/")
+			listel[2] = LabelFrame(Frame2_3, padx=5, pady=5)
+			nom3.pack(side=TOP)
+			e3.pack(side=TOP)
+			boutone3.pack(side=TOP)
+			listel[2].pack(fill="both", side=LEFT, expand="no")
+			Label(listel[2], text=s[-1]).pack(side=RIGHT)
 
-	listel[-1].pack(fill="both", side=LEFT, expand="no")
-	Label(listel[-1], text=s[-1]).pack(side=RIGHT)
 
 	if(csvan is not None and csvdyn is not None and csvdef is not None) :
 		bouton9.pack()
@@ -71,7 +82,6 @@ def save(tab) : #sauvegarder les graphes
 			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
 
 def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
-	print("a" + res0)
 	#on récupère la liste de figures
 	global tabfig
 	global contenantonglets
@@ -151,8 +161,10 @@ def reinit(tab, frame, frame2) :
 	nom3.pack_forget()
 	e3.pack_forget()
 	#on supprime le nom des csv
+	global listel
 	for i in range(len(listel)) :
 		listel[i].destroy()
+	listel=[0,0,0]
 	#on met à jour la fenêtre
 	fenetre.update()
 
