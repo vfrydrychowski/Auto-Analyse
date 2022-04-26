@@ -166,6 +166,9 @@ def get_score(dfa, df1, df2, coeffAcc = 1, coefVit = 1, parseString = "Parser"):
     
     return [[score(x[0], x[1], x[2], coeffAcc, coefVit)] for x in tronc]
 
+def get_score_global(tabScore, tabPoids):
+    return 0
+
 #retourne les tableau de données utilisées
 def get_data():
     global gdfa
