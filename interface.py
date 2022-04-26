@@ -57,16 +57,12 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 def getEntry(entry, nom_frame) :
 	if(nom_frame == 'Frame2_1') :
 		res[0] = entry.get()
-		print("z")
 	elif(nom_frame == 'Frame2_2') :
 		res[1] = entry.get()
-		print("e")
 	elif(nom_frame == 'Frame2_3') :
 		res[2] = entry.get()
-		print("r")
 	else :
 		parser = entry.get()
-		print("t")
 	
 
 def save(tab) : #sauvegarder les graphes
@@ -90,7 +86,6 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 	#on affiche les onglets dynamiquement
 	
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
-	print(fonctionValentin)
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	#affichage des résultats pour chaque tronçon
@@ -169,14 +164,17 @@ a = 0
 l = []
 
 def changerPoids() :
+	global page
 	page = Toplevel(fenetre)
 	global entreevit, entreeacc, listptroncons
 	vit = StringVar()
+	vit.set("1")
 	nomv = Label(page, text='Poids vitesse')
 	nomv.pack(side=TOP, padx=10, pady=10)
 	entreevit = Entry(page, textvariable=vit, width=20)
 	entreevit.pack()
 	acc = StringVar()
+	acc.set("1")
 	noma = Label(page, text='Poids accélérations')
 	noma.pack(side=TOP, padx=10, pady=10)
 	entreeacc = Entry(page, textvariable=acc, width=20)
@@ -184,6 +182,7 @@ def changerPoids() :
 	listptroncons = []
 	for i in range(tabfig.shape[0]) :
 		value = StringVar()
+		value.set("1")
 		nomval = Label(page, text='Poids tronçon'+str(i+1))
 		nomval.pack(side=TOP, padx=10, pady=10)
 		entree = Entry(page, textvariable=value, width=20)
@@ -196,13 +195,23 @@ def changerPoids() :
 
 def valider() :
 	global v, a, l
+	#si l'user a mis une val qui n'est pas entre 0 et 1 on remet tout à 1
 	v = entreevit.get()
+	if(float(v)<0 or float(v)>1) :
+		v = 1
+	if(float(a)<0 or float(a)>1) :
+		a = 1
 	a = entreeacc.get()
 	for i in range(tabfig.shape[0]) :
-		l.append(listptroncons[i].get())
+		if(float(listptroncons[i].get())<0 or float(listptroncons[i].get())>1) :
+			l.append(1)
+		else :
+			l.append(float(listptroncons[i].get()))
 	global l4
 	l4.destroy()
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef, float(a), float(v))
+	for i in range(len(fonctionValentin)):
+		fonctionValentin[i][0] = fonctionValentin[i][0]*l[i]
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	#affichage des résultats pour chaque tronçon
@@ -211,6 +220,7 @@ def valider() :
 			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
 		elif(fonctionValentin[z][0]>0):
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
+	page.destroy()
 
 
 fenetre = Tk()
