@@ -134,12 +134,21 @@ def vitesseMSE(df1,df2):
 def accelerationMSE(df1,df2):
     return norm(((df1['Acceleration'].to_numpy() - df2['Acceleration'].to_numpy())**2).mean())
 
+#fonction de correlation de Pierson point à point pour l'acceleration et la vitesse
+# 1 : ressemblance parfaite
+# 0 : aucune ressemblance
+def correlation(df1, df2):
+    coef = np.corrcoef(df1[['Vitesse','Acceleration']].to_numpy(), df2[['Vitesse','Acceleration']].to_numpy(), rowvar=False)
+    if coef<0 : # on ne veut que la ressemblance, pas la symétrie/opposition
+        coef = 0
+    return coef
+
 #renvoi le score de proximité de df avec df1 et df2
 #out : si < 0 , le style df1 est le plus ressemblant, si > 0 c'est le stle df2
 def score(df,df1,df2, coeffAcc = 1, coefVit = 1):
     ndf1 = createClosestD(df,df1)
     ndf2 = createClosestD(df, df2)
-    return coefVit*(vitesseMSE(df,ndf1) - vitesseMSE(df,ndf2)) + coeffAcc*(accelerationMSE(df,ndf1) - accelerationMSE(df,ndf2))
+    return coefVit*(vitesseMSE(df,ndf1) - vitesseMSE(df,ndf2)) + coeffAcc*(accelerationMSE(df,ndf1) - accelerationMSE(df,ndf2)) + correlation(df,df2) - correlation(df,df1)
 
 #renvoie les scores des vitesses poour chaques tronçons 
 def get_score(dfa, df1, df2, coeffAcc = 1, coefVit = 1, parseString = "Parser"):
