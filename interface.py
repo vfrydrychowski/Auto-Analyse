@@ -22,7 +22,6 @@ contenantonglets = None
 l4 = None
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
-
 	#on place notre label à côté du bouton correspondant
 	if(nom_frame == 'Frame2_1') : #on pack les éléments pour changer nom courbe1
 		if(listel[0] == 0) : #si on a pas déjà choisi un fichier
@@ -35,6 +34,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			boutone1.pack(side=TOP)
 			listel[0].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[0], text=s[-1]).pack(side=RIGHT)
+			bouton['state']==DISABLED
 
 	elif(nom_frame == 'Frame2_2') : #courbe2
 		if(listel[1] == 0) :
@@ -222,8 +222,7 @@ def valider() :
 	global l4
 	l4.destroy()
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef, float(a), float(v))
-	for i in range(len(fonctionValentin)):
-		fonctionValentin[i][0] = fonctionValentin[i][0]*l[i]
+
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	#affichage des résultats pour chaque tronçon
@@ -233,6 +232,9 @@ def valider() :
 		elif(fonctionValentin[z][0]>0):
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
 	page.destroy()
+
+def callback(texte) :
+	showinfo('Erreur', texte)
 
 
 fenetre = Tk()
@@ -259,16 +261,16 @@ Frame3 = Frame(Frame1, borderwidth=2)
 Frame3.pack(padx=5, pady=5)
 
 csvdyn = None 
-bouton = Button(Frame2_1, text = "Style 1", command=lambda: recupere('csvdyn', 'Frame2_1'))
+bouton = Button(Frame2_1, text = "Style 1", state=NORMAL, command=lambda: recupere('csvdyn', 'Frame2_1'))
 bouton.pack(side=LEFT, padx=5, pady=5)
 #print(csvdyn)
 
 csvdef = None
-bouton1 = Button(Frame2_2, text = "Style 2", command=lambda: recupere('csvdef', 'Frame2_2'))
+bouton1 = Button(Frame2_2, text = "Style 2", state=NORMAL, command=lambda: recupere('csvdef', 'Frame2_2'))
 bouton1.pack(side=LEFT, padx=5, pady=5)
 
 csvan = None
-bouton2 = Button(Frame2_3, text = "Csv à analyser", command=lambda: recupere('csvan', 'Frame2_3'))
+bouton2 = Button(Frame2_3, text = "Csv à analyser", state=NORMAL, command=lambda: recupere('csvan', 'Frame2_3'))
 bouton2.pack(side=LEFT, padx=5, pady=5)
 
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
