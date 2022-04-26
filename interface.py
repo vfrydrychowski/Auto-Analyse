@@ -252,7 +252,7 @@ def valider() :
 
 
 fenetre = Tk()
-fenetre.geometry("900x600")
+fenetre.geometry("1080x720")
 
 #création des frames
 
