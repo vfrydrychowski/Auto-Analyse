@@ -120,15 +120,19 @@ def createClosestD(df1,df2):
     df2.set_index('distance')
     return ndf2
 
+#normalisation
+def norm(x):
+    return((1/(1+np.exp(-x/10))-0.5)*2)
+
 #fonction de calcul de proximité basique des courbes de vitesses
 #in deux dataframes indexés sur 'distance'. Doivent contenir le champs 'Vitesse'
 def vitesseMSE(df1,df2):
-    return spef.softmax(((df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy())**2).mean())
+    return norm(((df1['Vitesse'].to_numpy() - df2['Vitesse'].to_numpy())**2).mean())
 
 #fonction de calcul de proximité basique des courbes d'accceleration
 #in deux dataframes indexés sur 'distance'. Doivent contenir le champs 'Acceleration'
 def accelerationMSE(df1,df2):
-    return spef.softmax(((df1['Acceleration'].to_numpy() - df2['Acceleration'].to_numpy())**2).mean())
+    return norm(((df1['Acceleration'].to_numpy() - df2['Acceleration'].to_numpy())**2).mean())
 
 #renvoi le score de proximité de df avec df1 et df2
 #out : si < 0 , le style df1 est le plus ressemblant, si > 0 c'est le stle df2
