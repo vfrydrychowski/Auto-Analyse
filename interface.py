@@ -227,11 +227,8 @@ def valider() :
 	global l4
 	l4.destroy()
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef, float(a), float(v))
-<<<<<<< HEAD
 	resultglobal=an.get_score_global(fonctionValentin, l)
-=======
 
->>>>>>> main
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	#affichage des résultats pour chaque tronçon
@@ -240,11 +237,7 @@ def valider() :
 			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
 		elif(fonctionValentin[z][0]>0):
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
-<<<<<<< HEAD
 	Label(l4, text="Résultat global : "+str(resultglobal))
-=======
-
->>>>>>> main
 	page.destroy()
 
 
