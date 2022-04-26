@@ -96,9 +96,9 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 	#affichage des résultats pour chaque tronçon
 	for z in range(0,len(fonctionValentin)) :
 		if(fonctionValentin[z][0]<0):
-			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
+			Label(l4, text="Tronçon "+str(z+1)+" : Style1").pack()
 		elif(fonctionValentin[z][0]>0):
-			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
+			Label(l4, text="Tronçon "+str(z+1)+" : Style2").pack()
 		
 	contenantonglets = Frame(fenetre, borderwidth=2)
 	contenantonglets.pack(side=TOP, padx=5, pady=5)
@@ -184,7 +184,7 @@ def changerPoids() :
 	listptroncons = []
 	for i in range(tabfig.shape[0]) :
 		value = StringVar()
-		nomval = Label(page, text='Poids tronçon'+str(i))
+		nomval = Label(page, text='Poids tronçon'+str(i+1))
 		nomval.pack(side=TOP, padx=10, pady=10)
 		entree = Entry(page, textvariable=value, width=20)
 		entree.pack()
