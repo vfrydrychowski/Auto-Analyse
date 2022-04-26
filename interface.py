@@ -130,6 +130,8 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 	#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
 	bouton9.pack_forget()
+	#on peut modifier les poids
+	boutonpoids.pack(side=TOP)
 
 	fenetre.update()
 
@@ -165,6 +167,9 @@ def reinit(tab, frame, frame2) :
 	for i in range(len(listel)) :
 		listel[i].destroy()
 	listel=[0,0,0]
+
+	boutonpoids.pack_forget()
+
 	#on met à jour la fenêtre
 	fenetre.update()
 
@@ -231,6 +236,7 @@ def valider() :
 			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
 		elif(fonctionValentin[z][0]>0):
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
+
 	page.destroy()
 
 def callback(texte) :
@@ -278,6 +284,8 @@ bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, c
 bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
 bouton10.pack() 
 
+boutonpoids = Button(Frame1, text="Changer les poids", command=lambda: changerPoids())
+
 #changer nom courbe
 string1 = None
 nom1 = Label(Frame2_1, text='Nom de la courbe')
@@ -294,13 +302,10 @@ boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Fram
 
 #changer le préfixe du parser
 nomp = Label(Frame2, text='Changer le préfixe de parsing')
-nomp.pack(side=TOP, padx=10, pady=10)
+nomp.pack(side=LEFT, padx=10, pady=10)
 ep = Entry(Frame2, textvariable=string)
-ep.pack(side=TOP, padx=2, pady=2)
+ep.pack(side=LEFT, padx=2, pady=2)
 boutonep = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2))
-boutonep.pack(side=TOP, padx=10, pady=10)
-
-boutonpoids = Button(Frame2, text="Changer les poids", command=lambda: changerPoids())
-boutonpoids.pack()
+boutonep.pack(side=LEFT, padx=10, pady=10)
 
 fenetre.mainloop()
