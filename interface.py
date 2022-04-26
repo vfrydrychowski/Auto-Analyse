@@ -233,8 +233,6 @@ def valider() :
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
 	page.destroy()
 
-def callback(texte) :
-	showinfo('Erreur', texte)
 
 
 fenetre = Tk()

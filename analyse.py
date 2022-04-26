@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.special as spef
 import re
-
+import erreur
 
 gdfa = None #dataframe utilisateur  
 gdf1 = None #dataframe style1
@@ -185,6 +185,7 @@ def plot_graph(dfAn, dfAgg, dfDef,label0 = 'User', label1 = 'style1', label2 = '
     taille = np.array([len(x) for x in tronc])
     if not all((taille == taille[0])): 
         print("#####################\nErreur du nombre de triggers. Vérifiez les fichiers d'entrées\n#####################")
+        erreur.callback("Erreur du nombre de triggers. Vérifiez les fichiers d'entrées.")
         return []
     
     tronc = np.transpose(tronc)
