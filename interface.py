@@ -80,6 +80,14 @@ def save(tab) : #sauvegarder les graphes
 	for i in range(len(tab)) :
 		for j in range(len(tab[0])) :
 			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
+	data1, data2, data3 = an.get_data()
+	data1.to_csv('tableau_analyse.csv', index=False)
+	data2.to_csv('tableau_style1.csv', index=False)
+	data3.to_csv('tableau_style2.csv', index=False)
+	callback("Enregistré avec succès")
+
+def callback(texte) :
+	showinfo('', texte)
 
 def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 	#on récupère la liste de figures
