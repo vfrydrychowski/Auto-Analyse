@@ -166,8 +166,11 @@ def get_score(dfa, df1, df2, coeffAcc = 1, coefVit = 1, parseString = "Parser"):
     
     return [[score(x[0], x[1], x[2], coeffAcc, coefVit)] for x in tronc]
 
+#renvoie le score global de tout les tronçons
+#tabScore : le tableau de score renvoyé par get_score
+#tabPoid : le tableau des poids associés aux troncons
 def get_score_global(tabScore, tabPoids):
-    return 0
+    return (np.array(tabScore)*np.array(tabPoids)).sum()
 
 #retourne les tableau de données utilisées
 def get_data():
