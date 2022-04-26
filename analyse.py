@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.special as spef
 import re
-
+import erreur
 
 gdfa = None #dataframe utilisateur  
 gdf1 = None #dataframe style1
@@ -178,6 +178,16 @@ def get_data():
 def plot_graph(dfAn, dfAgg, dfDef,label0 = 'User', label1 = 'style1', label2 = 'style2', parseString = "Parser"):
     csvs = [dfAn, dfAgg, dfDef]
     DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
-    tronc = np.transpose([parse(x, parseString) for x in DV])
+    #tronc = np.transpose([parse(x, parseString) for x in DV])
+    tronc = [parse(x, parseString) for x in DV]
+    
+    #verification de la coherence du nombre de tronçons entre les dataframes
+    taille = np.array([len(x) for x in tronc])
+    if not all((taille == taille[0])): 
+        print("#####################\nErreur du nombre de triggers. Vérifiez les fichiers d'entrées\n#####################")
+        erreur.callback("Erreur du nombre de triggers. Vérifiez les fichiers d'entrées.")
+        return []
+    
+    tronc = np.transpose(tronc)
     ids = [x for x in range(len(tronc))]
     return [[plotVitesse(x[0], x[1], x[2], id, label0, label1, label2),plotAcceleration(x[0], x[1], x[2], id+100, label0, label1, label2)] for (x,id) in zip(tronc,ids)]

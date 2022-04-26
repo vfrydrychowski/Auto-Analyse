@@ -239,8 +239,6 @@ def valider() :
 
 	page.destroy()
 
-def callback(texte) :
-	showinfo('Erreur', texte)
 
 
 fenetre = Tk()
