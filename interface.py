@@ -9,7 +9,8 @@ import string
 import pandas as pd
 import analyse as an
 import numpy as np
-#from tkinterhtml import HtmlFrame
+from tkinterhtml import HtmlFrame
+import webbrowser
 
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[0,0,0]
@@ -264,6 +265,12 @@ def valider() :
 		Label(l4, text="Résultat global : style2").pack()
 	page.destroy()
 
+def affichedoc() :
+	webbrowser.open('test.html')
+	#global pagedoc
+	#pagedoc = Toplevel(fenetre)
+	#frame = HtmlFrame(pagedoc, horizontal_scrollbar="auto")
+	#frame.set_content("test.html")
 
 
 fenetre = Tk()
@@ -308,6 +315,9 @@ bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, 
 bouton10.pack() 
 
 boutonpoids = Button(Frame1, text="Changer les poids", command=lambda: changerPoids())
+
+boutondoc = Button(Frame2, text = "Documentation", command=affichedoc)
+boutondoc.pack()
 
 #changer nom courbe
 string1 = None
