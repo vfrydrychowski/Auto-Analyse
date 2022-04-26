@@ -12,7 +12,7 @@ import numpy as np
 #from tkinterhtml import HtmlFrame
 
 global listel #liste contenant les labels des noms de fichiers csv
-listel=[]
+listel=[0,0,0]
 global res
 res=["User", "Style1", "Style2"]
 global parser
@@ -22,33 +22,44 @@ contenantonglets = None
 l4 = None
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
-	filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
-	globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
-	s = filename.split("/")
-
 	#on place notre label à côté du bouton correspondant
-	string2=None
-	string3=None
 	if(nom_frame == 'Frame2_1') : #on pack les éléments pour changer nom courbe1
-		listel.append(LabelFrame(Frame2_1, padx=2, pady=2))
-		nom1.pack(side=TOP)
-		e1.pack(side=TOP)
-		boutone1.pack(side=TOP)
+		if(listel[0] == 0) : #si on a pas déjà choisi un fichier
+			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
+			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
+			s = filename.split("/")
+			listel[0] = LabelFrame(Frame2_1, padx=2, pady=2)
+			nom1.pack(side=TOP)
+			e1.pack(side=TOP)
+			boutone1.pack(side=TOP)
+			listel[0].pack(fill="both", side=LEFT, expand="no")
+			Label(listel[0], text=s[-1]).pack(side=RIGHT)
+			bouton['state']==DISABLED
 
 	elif(nom_frame == 'Frame2_2') : #courbe2
-		listel.append(LabelFrame(Frame2_2, padx=5, pady=5))
-		nom2.pack(side=TOP)
-		e2.pack(side=TOP)
-		boutone2.pack(side=TOP)
+		if(listel[1] == 0) :
+			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
+			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
+			s = filename.split("/")
+			listel[1] = LabelFrame(Frame2_2, padx=5, pady=5)
+			nom2.pack(side=TOP)
+			e2.pack(side=TOP)
+			boutone2.pack(side=TOP)
+			listel[1].pack(fill="both", side=LEFT, expand="no")
+			Label(listel[1], text=s[-1]).pack(side=RIGHT)
 
 	else : #courbe3
-		listel.append(LabelFrame(Frame2_3, padx=5, pady=5))
-		nom3.pack(side=TOP)
-		e3.pack(side=TOP)
-		boutone3.pack(side=TOP)
+		if(listel[2] == 0) :
+			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
+			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
+			s = filename.split("/")
+			listel[2] = LabelFrame(Frame2_3, padx=5, pady=5)
+			nom3.pack(side=TOP)
+			e3.pack(side=TOP)
+			boutone3.pack(side=TOP)
+			listel[2].pack(fill="both", side=LEFT, expand="no")
+			Label(listel[2], text=s[-1]).pack(side=RIGHT)
 
-	listel[-1].pack(fill="both", side=LEFT, expand="no")
-	Label(listel[-1], text=s[-1]).pack(side=RIGHT)
 
 	if(csvan is not None and csvdyn is not None and csvdef is not None) :
 		bouton9.pack()
@@ -71,7 +82,6 @@ def save(tab) : #sauvegarder les graphes
 			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
 
 def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
-	print("a" + res0)
 	#on récupère la liste de figures
 	global tabfig
 	global contenantonglets
@@ -120,6 +130,8 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 	#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
 	bouton9.pack_forget()
+	#on peut modifier les poids
+	boutonpoids.pack(side=TOP)
 
 	fenetre.update()
 
@@ -151,8 +163,13 @@ def reinit(tab, frame, frame2) :
 	nom3.pack_forget()
 	e3.pack_forget()
 	#on supprime le nom des csv
+	global listel
 	for i in range(len(listel)) :
 		listel[i].destroy()
+	listel=[0,0,0]
+
+	boutonpoids.pack_forget()
+
 	#on met à jour la fenêtre
 	fenetre.update()
 
@@ -210,7 +227,11 @@ def valider() :
 	global l4
 	l4.destroy()
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef, float(a), float(v))
+<<<<<<< HEAD
 	resultglobal=an.get_score_global(fonctionValentin, l)
+=======
+
+>>>>>>> main
 	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
 	l4.pack(fill="both", expand="yes")
 	#affichage des résultats pour chaque tronçon
@@ -219,8 +240,13 @@ def valider() :
 			Label(l4, text="Tronçon "+str(z)+" : Style1").pack()
 		elif(fonctionValentin[z][0]>0):
 			Label(l4, text="Tronçon "+str(z)+" : Style2").pack()
+<<<<<<< HEAD
 	Label(l4, text="Résultat global : "+str(resultglobal))
+=======
+
+>>>>>>> main
 	page.destroy()
+
 
 
 fenetre = Tk()
@@ -247,22 +273,24 @@ Frame3 = Frame(Frame1, borderwidth=2)
 Frame3.pack(padx=5, pady=5)
 
 csvdyn = None 
-bouton = Button(Frame2_1, text = "Style 1", command=lambda: recupere('csvdyn', 'Frame2_1'))
+bouton = Button(Frame2_1, text = "Style 1", state=NORMAL, command=lambda: recupere('csvdyn', 'Frame2_1'))
 bouton.pack(side=LEFT, padx=5, pady=5)
 #print(csvdyn)
 
 csvdef = None
-bouton1 = Button(Frame2_2, text = "Style 2", command=lambda: recupere('csvdef', 'Frame2_2'))
+bouton1 = Button(Frame2_2, text = "Style 2", state=NORMAL, command=lambda: recupere('csvdef', 'Frame2_2'))
 bouton1.pack(side=LEFT, padx=5, pady=5)
 
 csvan = None
-bouton2 = Button(Frame2_3, text = "Csv à analyser", command=lambda: recupere('csvan', 'Frame2_3'))
+bouton2 = Button(Frame2_3, text = "Csv à analyser", state=NORMAL, command=lambda: recupere('csvan', 'Frame2_3'))
 bouton2.pack(side=LEFT, padx=5, pady=5)
 
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
 
 bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
 bouton10.pack() 
+
+boutonpoids = Button(Frame1, text="Changer les poids", command=lambda: changerPoids())
 
 #changer nom courbe
 string1 = None
@@ -280,13 +308,10 @@ boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Fram
 
 #changer le préfixe du parser
 nomp = Label(Frame2, text='Changer le préfixe de parsing')
-nomp.pack(side=TOP, padx=10, pady=10)
+nomp.pack(side=LEFT, padx=10, pady=10)
 ep = Entry(Frame2, textvariable=string)
-ep.pack(side=TOP, padx=2, pady=2)
+ep.pack(side=LEFT, padx=2, pady=2)
 boutonep = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2))
-boutonep.pack(side=TOP, padx=10, pady=10)
-
-boutonpoids = Button(Frame2, text="Changer les poids", command=lambda: changerPoids())
-boutonpoids.pack()
+boutonep.pack(side=LEFT, padx=10, pady=10)
 
 fenetre.mainloop()
