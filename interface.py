@@ -34,7 +34,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			boutone1.pack(side=TOP)
 			listel[0].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[0], text=s[-1]).pack(side=RIGHT)
-			bouton['state']==DISABLED
+			bouton['state']=DISABLED
 
 	elif(nom_frame == 'Frame2_2') : #courbe2
 		if(listel[1] == 0) :
@@ -47,6 +47,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			boutone2.pack(side=TOP)
 			listel[1].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[1], text=s[-1]).pack(side=RIGHT)
+			bouton1['state']=DISABLED
 
 	else : #courbe3
 		if(listel[2] == 0) :
@@ -59,6 +60,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			boutone3.pack(side=TOP)
 			listel[2].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[2], text=s[-1]).pack(side=RIGHT)
+			bouton2['state']=DISABLED
 
 
 	if(csvan is not None and csvdyn is not None and csvdef is not None) :
@@ -179,10 +181,15 @@ def reinit(tab, frame, frame2) :
 	#on supprime le nom des csv
 	global listel
 	for i in range(len(listel)) :
-		listel[i].destroy()
+		if(listel[i]!=0) :
+			listel[i].destroy()
 	listel=[0,0,0]
 
 	boutonpoids.pack_forget()
+
+	bouton['state']=NORMAL
+	bouton1['state']=NORMAL
+	bouton2['state']=NORMAL
 
 	#on met à jour la fenêtre
 	fenetre.update()
