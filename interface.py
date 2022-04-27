@@ -29,10 +29,10 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 			s = filename.split("/")
-			listel[0] = LabelFrame(Frame2_1, padx=2, pady=2)
-			nom1.pack(side=TOP)
-			e1.pack(side=TOP)
-			boutone1.pack(side=TOP)
+			listel[0] = LabelFrame(Frame2_1_a, padx=2, pady=2)
+			nom1.pack(side=LEFT)
+			e1.pack(side=LEFT)
+			boutone1.pack(side=LEFT)
 			listel[0].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[0], text=s[-1]).pack(side=RIGHT)
 			bouton['state']=DISABLED
@@ -42,10 +42,10 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 			s = filename.split("/")
-			listel[1] = LabelFrame(Frame2_2, padx=5, pady=5)
-			nom2.pack(side=TOP)
-			e2.pack(side=TOP)
-			boutone2.pack(side=TOP)
+			listel[1] = LabelFrame(Frame2_2_a, padx=5, pady=5)
+			nom2.pack(side=LEFT)
+			e2.pack(side=LEFT)
+			boutone2.pack(side=LEFT)
 			listel[1].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[1], text=s[-1]).pack(side=RIGHT)
 			bouton1['state']=DISABLED
@@ -55,10 +55,10 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 			s = filename.split("/")
-			listel[2] = LabelFrame(Frame2_3, padx=5, pady=5)
-			nom3.pack(side=TOP)
-			e3.pack(side=TOP)
-			boutone3.pack(side=TOP)
+			listel[2] = LabelFrame(Frame2_3_a, padx=5, pady=5)
+			nom3.pack(side=LEFT)
+			e3.pack(side=LEFT)
+			boutone3.pack(side=LEFT)
 			listel[2].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[2], text=s[-1]).pack(side=RIGHT)
 			bouton2['state']=DISABLED
@@ -287,27 +287,39 @@ Frame2.pack(side=TOP, padx=5, pady=5)
 
 Frame2_1 = Frame(Frame2, borderwidth=2)
 Frame2_1.pack(padx=5, pady=5)
+Frame2_1_a = Frame(Frame2_1, borderwidth=2)
+Frame2_1_a.pack(side=TOP, padx=5, pady=5)
+Frame2_1_b = Frame(Frame2_1, borderwidth=2)
+Frame2_1_b.pack(side=BOTTOM, padx=5, pady=5)
 
 Frame2_2 = Frame(Frame2, borderwidth=2)
 Frame2_2.pack(padx=5, pady=5)
+Frame2_2_a = Frame(Frame2_2, borderwidth=2)
+Frame2_2_a.pack(side=TOP, padx=5, pady=5)
+Frame2_2_b = Frame(Frame2_2, borderwidth=2)
+Frame2_2_b.pack(side=BOTTOM, padx=5, pady=5)
 
 Frame2_3 = Frame(Frame2, borderwidth=2)
 Frame2_3.pack(padx=5, pady=5)
+Frame2_3_a = Frame(Frame2_3, borderwidth=2)
+Frame2_3_a.pack(side=TOP, padx=5, pady=5)
+Frame2_3_b = Frame(Frame2_3, borderwidth=2)
+Frame2_3_b.pack(side=BOTTOM, padx=5, pady=5)
 
 Frame3 = Frame(Frame1, borderwidth=2)
 Frame3.pack(padx=5, pady=5)
 
 csvdyn = None 
-bouton = Button(Frame2_1, text = "Style 1", state=NORMAL, command=lambda: recupere('csvdyn', 'Frame2_1'))
+bouton = Button(Frame2_1_a, text = "Style 1", state=NORMAL, command=lambda: recupere('csvdyn', 'Frame2_1'))
 bouton.pack(side=LEFT, padx=5, pady=5)
 #print(csvdyn)
 
 csvdef = None
-bouton1 = Button(Frame2_2, text = "Style 2", state=NORMAL, command=lambda: recupere('csvdef', 'Frame2_2'))
+bouton1 = Button(Frame2_2_a, text = "Style 2", state=NORMAL, command=lambda: recupere('csvdef', 'Frame2_2'))
 bouton1.pack(side=LEFT, padx=5, pady=5)
 
 csvan = None
-bouton2 = Button(Frame2_3, text = "Csv à analyser", state=NORMAL, command=lambda: recupere('csvan', 'Frame2_3'))
+bouton2 = Button(Frame2_3_a, text = "Csv à analyser", state=NORMAL, command=lambda: recupere('csvan', 'Frame2_3'))
 bouton2.pack(side=LEFT, padx=5, pady=5)
 
 bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
@@ -322,9 +334,9 @@ boutondoc.pack()
 
 #changer nom courbe
 string1 = None
-nom1 = Label(Frame2_1, text='Nom de la courbe')
-e1 = Entry(Frame2_1, textvariable=string1)
-boutone1 = Button(Frame2_1, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
+nom1 = Label(Frame2_1_b, text='Nom de la courbe')
+e1 = Entry(Frame2_1_b, textvariable=string1)
+boutone1 = Button(Frame2_1_b, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
 string2 = None
 nom2 = Label(Frame2_2, text='Nom de la courbe')
 e2 = Entry(Frame2_2, textvariable=string2)
