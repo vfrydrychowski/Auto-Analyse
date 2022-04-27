@@ -131,7 +131,8 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 		longlets.append(ttk.Frame(onglets))
 		onglets.add(longlets[k], text="Tronçon" + str(k+1))
 
-		contenantfigs.append(Canvas(longlets[k], borderwidth=2))
+		contenantfigs.append(Canvas(longlets[k], highlightthickness=0, height=50, width=50))
+		#contenantfigs[k].configure(highlightthickness=0)
 		contenantfigs[k].pack(padx=2, pady=2)
 
 		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
