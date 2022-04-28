@@ -15,60 +15,60 @@ import webbrowser
 global listel #liste contenant les labels des noms de fichiers csv
 listel=[0,0,0]
 global res
-res=["User", "Style1", "Style2"]
-global parser
+res=["User", "Style1", "Style2"] #pour les noms des courbes
+global parser #ppour le préfixe du parser
 parser = "Parser"
-tabfig = np.array([])
+tabfig = np.array([]) #tableau des graphes à afficher
 contenantonglets = None
 l4 = None
 
 def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
-	#on place notre label à côté du bouton correspondant
-	if(nom_frame == 'Frame2_1') : #on pack les éléments pour changer nom courbe1
+	#on place le chemin du fichier à côté du bouton correspondant
+	if(nom_frame == 'Frame2_1') : #on pack les éléments pour changer le nom de la courbe1
 		if(listel[0] == 0) : #si on a pas déjà choisi un fichier
 			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 			s = filename.split("/")
-			listel[0] = LabelFrame(Frame2_1, padx=2, pady=2)
-			nom1.pack(side=TOP)
-			e1.pack(side=TOP)
-			boutone1.pack(side=TOP)
+			listel[0] = LabelFrame(Frame2_1_a, padx=2, pady=2)
+			nom1.pack(side=LEFT)
+			e1.pack(side=LEFT)
+			bouton_entry1.pack(side=LEFT)
 			listel[0].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[0], text=s[-1]).pack(side=RIGHT)
-			bouton['state']=DISABLED
+			bouton_style1['state']=DISABLED #bouton grisé pour ne plus pouvoir rajouter de fichier
 
 	elif(nom_frame == 'Frame2_2') : #courbe2
 		if(listel[1] == 0) :
 			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 			s = filename.split("/")
-			listel[1] = LabelFrame(Frame2_2, padx=5, pady=5)
-			nom2.pack(side=TOP)
-			e2.pack(side=TOP)
-			boutone2.pack(side=TOP)
+			listel[1] = LabelFrame(Frame2_2_a, padx=5, pady=5)
+			nom2.pack(side=LEFT)
+			e2.pack(side=LEFT)
+			bouton_entry2.pack(side=LEFT)
 			listel[1].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[1], text=s[-1]).pack(side=RIGHT)
-			bouton1['state']=DISABLED
+			bouton_style2['state']=DISABLED
 
 	else : #courbe3
 		if(listel[2] == 0) :
 			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
 			globals()[strGlob] = pd.read_csv(filename, delim_whitespace=True, index_col='time')
 			s = filename.split("/")
-			listel[2] = LabelFrame(Frame2_3, padx=5, pady=5)
-			nom3.pack(side=TOP)
-			e3.pack(side=TOP)
-			boutone3.pack(side=TOP)
+			listel[2] = LabelFrame(Frame2_3_a, padx=5, pady=5)
+			nom3.pack(side=LEFT)
+			e3.pack(side=LEFT)
+			bouton_entry3.pack(side=LEFT)
 			listel[2].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[2], text=s[-1]).pack(side=RIGHT)
-			bouton2['state']=DISABLED
+			bouton_csvAn['state']=DISABLED
 
 
-	if(csvan is not None and csvdyn is not None and csvdef is not None) :
-		bouton9.pack()
+	if(csvan is not None and csvdyn is not None and csvdef is not None) : #si on a choisi les 3 csv on peut lancer l'analyse
+		bouton_lancerAnalyse.pack()
 
 
-def getEntry(entry, nom_frame) :
+def getEntry(entry, nom_frame) : #récupérer les saisies utilisateur pour les noms de courbes et le préfixe de parsing
 	if(nom_frame == 'Frame2_1') :
 		res[0] = entry.get()
 	elif(nom_frame == 'Frame2_2') :
@@ -79,7 +79,7 @@ def getEntry(entry, nom_frame) :
 		parser = entry.get()
 	
 
-def save(tab) : #sauvegarder les graphes
+def save(tab) : #sauvegarder les graphes et les tableaux de data
 	for i in range(len(tab)) :
 		for j in range(len(tab[0])) :
 			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
@@ -87,73 +87,73 @@ def save(tab) : #sauvegarder les graphes
 	data1.to_csv('tableau_analyse.csv', index=False)
 	data2.to_csv('tableau_style1.csv', index=False)
 	data3.to_csv('tableau_style2.csv', index=False)
-	callback("Enregistré avec succès")
+	callback("Enregistré avec succès") #message indiquant que l'enregistrement s'est bien passé
 
-def callback(texte) :
+def callback(texte) : #fonction de message pop-up
 	showinfo('', texte)
 
-def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
-	#on récupère la liste de figures
+def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) : #dessiner les graphes
 	global tabfig
 	global contenantonglets
 	global l4 
-	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef, res0, res1, res2, parser))
-	i,j = tabfig.shape
+	tabfig = np.array(an.plot_graph(csvan, csvdyn, csvdef, res0, res1, res2, parser)) #on récupère la liste de figures
+	if(len(tabfig)!=0) :
+		i,j = tabfig.shape
 
-	contenantfigs = []
-	longlets = []
-	lbuttons = []
+		contenantfigs = []
+		longlets = []
+		lbuttons = []
 
-	#on affiche les onglets dynamiquement
-	
-	fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
-	l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
-	l4.pack(fill="both", expand="yes")
-	#affichage des résultats pour chaque tronçon
-	for z in range(0,len(fonctionValentin)) :
-		if(fonctionValentin[z][0]<0):
-			Label(l4, text="Tronçon "+str(z+1)+" : Style1").pack()
-		elif(fonctionValentin[z][0]>0):
-			Label(l4, text="Tronçon "+str(z+1)+" : Style2").pack()
-	scoreglobal=an.get_score_global(fonctionValentin,[1]*len(fonctionValentin))
-	if(scoreglobal<0):	
-		Label(l4, text="Résultat global : Style1").pack()
-	else:
-		Label(l4, text="Résultat global : Style2").pack()
+		#afficher le score
+		fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
+		l4 = LabelFrame(Frame1, text="Resultats", padx=20, pady=20)
+		l4.pack(fill="both", expand="yes")
+		#affichage des résultats pour chaque tronçon
+		for z in range(0,len(fonctionValentin)) :
+			if(fonctionValentin[z][0]<0):
+				Label(l4, text="Tronçon "+str(z+1)+" : Style1").pack()
+			elif(fonctionValentin[z][0]>0):
+				Label(l4, text="Tronçon "+str(z+1)+" : Style2").pack()
+		scoreglobal=an.get_score_global(fonctionValentin,[1]*len(fonctionValentin))
+		if(scoreglobal<0):	
+			Label(l4, text="Résultat global : Style1").pack()
+		else:
+			Label(l4, text="Résultat global : Style2").pack()
 
-		
-	contenantonglets = Frame(fenetre, borderwidth=2)
-	contenantonglets.pack(side=TOP, padx=5, pady=5)
-	onglets = ttk.Notebook(contenantonglets)
+		#on affiche les onglets dynamiquement
+		contenantonglets = Frame(fenetre, borderwidth=2)
+		contenantonglets.pack(side=TOP, padx=5, pady=5)
+		onglets = ttk.Notebook(contenantonglets)
 
-	#affichage des graphes sur les tronçons
-	for k in range(i) :
-		longlets.append(ttk.Frame(onglets))
-		onglets.add(longlets[k], text="Tronçon" + str(k+1))
+		#affichage des graphes sur les tronçons
+		for k in range(i) :
+			longlets.append(ttk.Frame(onglets))
+			onglets.add(longlets[k], text="Tronçon" + str(k+1))
 
-		contenantfigs.append(Canvas(longlets[k], borderwidth=2))
-		contenantfigs[k].pack(padx=2, pady=2)
+			contenantfigs.append(Canvas(longlets[k], highlightthickness=0, height=50, width=50))
+			#contenantfigs[k].configure(highlightthickness=0)
+			contenantfigs[k].pack(padx=2, pady=2)
 
-		lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
-		lbuttons[k].pack(side=BOTTOM)
-		for l in range(j) :
-			#créer des labels pour contenir les fig
-			canvas = FigureCanvasTkAgg(tabfig[k][l], master=contenantfigs[k])
-			canvas.draw()
-			canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
-			#a verifier si ça marche qd plusieurs tabs par onglets
+			lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
+			lbuttons[k].pack(side=BOTTOM)
+			for l in range(j) :
+				#créer des labels pour contenir les fig
+				canvas = FigureCanvasTkAgg(tabfig[k][l], master=contenantfigs[k])
+				canvas.draw()
+				canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+				#a verifier si ça marche qd plusieurs tabs par onglets
 
-	onglets.pack(side=BOTTOM, expand=1, fill="both")
+		onglets.pack(side=BOTTOM, expand=1, fill="both")
 
-	#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
-	bouton9.pack_forget()
-	#on peut modifier les poids
-	boutonpoids.pack(side=TOP)
+		#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
+		bouton_lancerAnalyse.pack_forget()
+		#on peut modifier les poids
+		boutonpoids.pack(side=TOP)
 
-	fenetre.update()
+		fenetre.update()
 
 
-def reinit(tab, frame, frame2) :
+def reinit(tab, frame, frame2) : #tout réinitialiser
 #si le tab n'est pas vide c'est qu'on a un affichage donc on le supprime
 	if(tab.ndim and tab.size) :
 		#on supprime la frame qui les affiche
@@ -168,17 +168,18 @@ def reinit(tab, frame, frame2) :
 
 
 #on enlève les cases pour les noms de courbes
-	boutone1.pack_forget()
+	bouton_entry1.pack_forget()
 	nom1.pack_forget()
 	e1.pack_forget()
 
-	boutone2.pack_forget()
+	bouton_entry2.pack_forget()
 	nom2.pack_forget()
 	e2.pack_forget()
 
-	boutone3.pack_forget()
+	bouton_entry3.pack_forget()
 	nom3.pack_forget()
 	e3.pack_forget()
+
 	#on supprime le nom des csv
 	global listel
 	for i in range(len(listel)) :
@@ -186,11 +187,13 @@ def reinit(tab, frame, frame2) :
 			listel[i].destroy()
 	listel=[0,0,0]
 
+	#on enlève le bouton pour changer les poids
 	boutonpoids.pack_forget()
 
-	bouton['state']=NORMAL
-	bouton1['state']=NORMAL
-	bouton2['state']=NORMAL
+	#on rend à nouveau les boutons de choix de csv accessibles
+	bouton_style1['state']=NORMAL
+	bouton_style2['state']=NORMAL
+	bouton_csvAn['state']=NORMAL
 
 	#on met à jour la fenêtre
 	fenetre.update()
@@ -202,9 +205,9 @@ v = 0
 a = 0
 l = []
 
-def changerPoids() :
+def changerPoids() : #changer les poids des tronçons et des paramètres
 	global page
-	page = Toplevel(fenetre)
+	page = Toplevel(fenetre) #on ouvre une nouvelle page
 	global entreevit, entreeacc, listptroncons
 	vit = StringVar()
 	vit.set("1")
@@ -232,7 +235,7 @@ def changerPoids() :
 	bouton.pack(side=BOTTOM, padx=5, pady=5)
 
 
-def valider() :
+def valider() : #valider les changements de poids
 	global v, a, l
 	#si l'user a mis une val qui n'est pas entre 0 et 1 on remet tout à 1
 	v = entreevit.get()
@@ -247,6 +250,7 @@ def valider() :
 		else :
 			l.append(float(listptroncons[i].get()))
 	global l4
+	#on supprime les anciens résultats et on en affiche des nouveaux
 	l4.destroy()
 	fonctionValentin = an.get_score(csvan, csvdyn, csvdef, float(a), float(v))
 	resultglobal=an.get_score_global(fonctionValentin, l)
@@ -260,24 +264,22 @@ def valider() :
 		elif(fonctionValentin[z][0]>0):
 			Label(l4, text="Tronçon "+str(z+1)+" : Style2").pack()
 	if(resultglobal<0):	
-		Label(l4, text="Résultat global : style1").pack()
+		Label(l4, text="Résultat global : Style1").pack()
 	else:
-		Label(l4, text="Résultat global : style2").pack()
+		Label(l4, text="Résultat global : Style2").pack()
 	page.destroy()
 
-def affichedoc() :
+
+def affichedoc() : #bouton permettant d'ouvrir la doc dans le navigateur
 	webbrowser.open('test.html')
-	#global pagedoc
-	#pagedoc = Toplevel(fenetre)
-	#frame = HtmlFrame(pagedoc, horizontal_scrollbar="auto")
-	#frame.set_content("test.html")
 
 
+
+#programme principal, créer la fenêtre et les boutons
 fenetre = Tk()
 fenetre.geometry("1080x720")
 
 #création des frames
-
 Frame1 = Frame(fenetre, borderwidth=2)
 Frame1.pack(side=LEFT, padx=50, pady=50)
 
@@ -286,33 +288,44 @@ Frame2.pack(side=TOP, padx=5, pady=5)
 
 Frame2_1 = Frame(Frame2, borderwidth=2)
 Frame2_1.pack(padx=5, pady=5)
+Frame2_1_a = Frame(Frame2_1, borderwidth=2)
+Frame2_1_a.pack(side=TOP, padx=5, pady=5)
+Frame2_1_b = Frame(Frame2_1, borderwidth=2)
+Frame2_1_b.pack(side=BOTTOM, padx=5, pady=5)
 
 Frame2_2 = Frame(Frame2, borderwidth=2)
 Frame2_2.pack(padx=5, pady=5)
+Frame2_2_a = Frame(Frame2_2, borderwidth=2)
+Frame2_2_a.pack(side=TOP, padx=5, pady=5)
+Frame2_2_b = Frame(Frame2_2, borderwidth=2)
+Frame2_2_b.pack(side=BOTTOM, padx=5, pady=5)
 
 Frame2_3 = Frame(Frame2, borderwidth=2)
 Frame2_3.pack(padx=5, pady=5)
+Frame2_3_a = Frame(Frame2_3, borderwidth=2)
+Frame2_3_a.pack(side=TOP, padx=5, pady=5)
+Frame2_3_b = Frame(Frame2_3, borderwidth=2)
+Frame2_3_b.pack(side=BOTTOM, padx=5, pady=5)
 
 Frame3 = Frame(Frame1, borderwidth=2)
 Frame3.pack(padx=5, pady=5)
 
 csvdyn = None 
-bouton = Button(Frame2_1, text = "Style 1", state=NORMAL, command=lambda: recupere('csvdyn', 'Frame2_1'))
-bouton.pack(side=LEFT, padx=5, pady=5)
-#print(csvdyn)
+bouton_style1 = Button(Frame2_1_a, text = "Style 1", state=NORMAL, command=lambda: recupere('csvdyn', 'Frame2_1'))
+bouton_style1.pack(side=LEFT, padx=5, pady=5)
 
 csvdef = None
-bouton1 = Button(Frame2_2, text = "Style 2", state=NORMAL, command=lambda: recupere('csvdef', 'Frame2_2'))
-bouton1.pack(side=LEFT, padx=5, pady=5)
+bouton_style2 = Button(Frame2_2_a, text = "Style 2", state=NORMAL, command=lambda: recupere('csvdef', 'Frame2_2'))
+bouton_style2.pack(side=LEFT, padx=5, pady=5)
 
 csvan = None
-bouton2 = Button(Frame2_3, text = "Csv à analyser", state=NORMAL, command=lambda: recupere('csvan', 'Frame2_3'))
-bouton2.pack(side=LEFT, padx=5, pady=5)
+bouton_csvAn = Button(Frame2_3_a, text = "Csv à analyser", state=NORMAL, command=lambda: recupere('csvan', 'Frame2_3'))
+bouton_csvAn.pack(side=LEFT, padx=5, pady=5)
 
-bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
+bouton_lancerAnalyse = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
 
-bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
-bouton10.pack() 
+bouton_reinit = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
+bouton_reinit.pack() 
 
 boutonpoids = Button(Frame1, text="Changer les poids", command=lambda: changerPoids())
 
@@ -321,24 +334,24 @@ boutondoc.pack()
 
 #changer nom courbe
 string1 = None
-nom1 = Label(Frame2_1, text='Nom de la courbe')
-e1 = Entry(Frame2_1, textvariable=string1)
-boutone1 = Button(Frame2_1, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
+nom1 = Label(Frame2_1_b, text='Nom de la courbe')
+e1 = Entry(Frame2_1_b, textvariable=string1)
+bouton_entry1 = Button(Frame2_1_b, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
 string2 = None
 nom2 = Label(Frame2_2, text='Nom de la courbe')
 e2 = Entry(Frame2_2, textvariable=string2)
-boutone2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, 'Frame2_2'))
+bouton_entry2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, 'Frame2_2'))
 string3 = None
 nom3 = Label(Frame2_3, text='Nom de la courbe')
 e3 = Entry(Frame2_3, textvariable=string3)
-boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Frame2_3'))
+bouton_entry3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Frame2_3'))
 
 #changer le préfixe du parser
 nomp = Label(Frame2, text='Changer le préfixe de parsing')
 nomp.pack(side=LEFT, padx=10, pady=10)
 ep = Entry(Frame2, textvariable=string)
 ep.pack(side=LEFT, padx=2, pady=2)
-boutonep = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2))
-boutonep.pack(side=LEFT, padx=10, pady=10)
+boutonparser = Button(Frame2, text = "Valider", command=lambda: getEntry(ep, Frame2))
+boutonparser.pack(side=LEFT, padx=10, pady=10)
 
 fenetre.mainloop()
