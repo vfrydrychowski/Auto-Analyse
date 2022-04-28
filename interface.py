@@ -16,14 +16,22 @@ global listel #liste contenant les labels des noms de fichiers csv
 listel=[0,0,0]
 global res
 res=["User", "Style1", "Style2"] #pour les noms des courbes
-global parser #ppour le préfixe du parser
+global parser #pour le préfixe du parser
 parser = "Parser"
 tabfig = np.array([]) #tableau des graphes à afficher
 contenantonglets = None
 l4 = None
 
-def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de prendre un autre type de fichier
-	#on place le chemin du fichier à côté du bouton correspondant
+def recupere(strGlob, nom_frame):
+	"""
+    Permet de récupérer les fichiers d'analyse csv dans l'explorateur de documents. 
+    Impossible de sélectionner autre chose qu'un fichier csv.
+    Args:
+        strGlob:   Stocke le contenu du csv.
+        nom_frame:   Nom de la frame contenant le bouton sélectionné.
+    """
+
+    #on place le chemin du fichier à côté du bouton correspondant
 	if(nom_frame == 'Frame2_1') : #on pack les éléments pour changer le nom de la courbe1
 		if(listel[0] == 0) : #si on a pas déjà choisi un fichier
 			filename = fd.askopenfilename(title="Ouvrir le fichier", filetypes=[("csv", "*.csv")])
@@ -69,6 +77,12 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 
 
 def getEntry(entry, nom_frame) : #récupérer les saisies utilisateur pour les noms de courbes et le préfixe de parsing
+	"""
+    Récupère les saisies utilisateur pour changer les noms des courbes et le préfixe de parsing.
+    Args:
+        entry:   L'entrée dont on veut récupérer la saisie.
+        nom_frame:   Nom de la frame contenant l'entrée sélectionnée.
+    """
 	if(nom_frame == 'Frame2_1') :
 		res[0] = entry.get()
 	elif(nom_frame == 'Frame2_2') :
@@ -79,7 +93,14 @@ def getEntry(entry, nom_frame) : #récupérer les saisies utilisateur pour les n
 		parser = entry.get()
 	
 
-def save(tab) : #sauvegarder les graphes et les tableaux de data
+def save(tab) :
+	"""
+    Permet de sauvegarder l'ensemble des graphes et des tableaux de données utilisés pour l'analyse. 
+    La sauvegarde s'effectue dans le dossier de l'interface.
+    Lorsque l'utilisateur a cliqué sur le bouton "Sauvegarder" une fenêtre pop-up apparaît pour signalé que l'enregistrement a bien été effectué.
+    Args:
+        tab:   Tableau de figures contenant tous les graphes à afficher.
+    """
 	for i in range(len(tab)) :
 		for j in range(len(tab[0])) :
 			tab[j][i].savefig("tab"+str(i)+"."+str(j)+".png")
@@ -89,10 +110,21 @@ def save(tab) : #sauvegarder les graphes et les tableaux de data
 	data3.to_csv('tableau_style2.csv', index=False)
 	callback("Enregistré avec succès") #message indiquant que l'enregistrement s'est bien passé
 
-def callback(texte) : #fonction de message pop-up
+def callback(texte) :
+	"""
+    Permet d'afficher une fenêtre pop-up avec le message de notre choix passé en paramètre.
+    Args:
+        texte:   String contenant le message à afficher.
+    """
 	showinfo('', texte)
 
-def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) : #dessiner les graphes
+def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
+	"""
+    Permet d'afficher les graphes.
+    Args:
+        strGlob:   Stocke le contenu du csv.
+        nom_frame:   Nom de la frame contenant le bouton sélectionné.
+    """
 	global tabfig
 	global contenantonglets
 	global l4 
