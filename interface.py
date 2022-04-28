@@ -32,7 +32,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			listel[0] = LabelFrame(Frame2_1_a, padx=2, pady=2)
 			nom1.pack(side=LEFT)
 			e1.pack(side=LEFT)
-			boutone1.pack(side=LEFT)
+			bouton_entry1.pack(side=LEFT)
 			listel[0].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[0], text=s[-1]).pack(side=RIGHT)
 			bouton_style1['state']=DISABLED #bouton grisé pour ne plus pouvoir rajouter de fichier
@@ -45,7 +45,7 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			listel[1] = LabelFrame(Frame2_2_a, padx=5, pady=5)
 			nom2.pack(side=LEFT)
 			e2.pack(side=LEFT)
-			boutone2.pack(side=LEFT)
+			bouton_entry2.pack(side=LEFT)
 			listel[1].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[1], text=s[-1]).pack(side=RIGHT)
 			bouton_style2['state']=DISABLED
@@ -58,14 +58,14 @@ def recupere(strGlob, nom_frame): #pour aller récupérer les csv, impossible de
 			listel[2] = LabelFrame(Frame2_3_a, padx=5, pady=5)
 			nom3.pack(side=LEFT)
 			e3.pack(side=LEFT)
-			boutone3.pack(side=LEFT)
+			bouton_entry3.pack(side=LEFT)
 			listel[2].pack(fill="both", side=LEFT, expand="no")
 			Label(listel[2], text=s[-1]).pack(side=RIGHT)
 			bouton_csvAn['state']=DISABLED
 
 
 	if(csvan is not None and csvdyn is not None and csvdef is not None) : #si on a choisi les 3 csv on peut lancer l'analyse
-		bouton9.pack()
+		bouton_lancerAnalyse.pack()
 
 
 def getEntry(entry, nom_frame) : #récupérer les saisies utilisateur pour les noms de courbes et le préfixe de parsing
@@ -146,7 +146,7 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) : #dessiner les graph
 		onglets.pack(side=BOTTOM, expand=1, fill="both")
 
 		#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
-		bouton9.pack_forget()
+		bouton_lancerAnalyse.pack_forget()
 		#on peut modifier les poids
 		boutonpoids.pack(side=TOP)
 
@@ -168,15 +168,15 @@ def reinit(tab, frame, frame2) : #tout réinitialiser
 
 
 #on enlève les cases pour les noms de courbes
-	boutone1.pack_forget()
+	bouton_entry1.pack_forget()
 	nom1.pack_forget()
 	e1.pack_forget()
 
-	boutone2.pack_forget()
+	bouton_entry2.pack_forget()
 	nom2.pack_forget()
 	e2.pack_forget()
 
-	boutone3.pack_forget()
+	bouton_entry3.pack_forget()
 	nom3.pack_forget()
 	e3.pack_forget()
 
@@ -313,7 +313,6 @@ Frame3.pack(padx=5, pady=5)
 csvdyn = None 
 bouton_style1 = Button(Frame2_1_a, text = "Style 1", state=NORMAL, command=lambda: recupere('csvdyn', 'Frame2_1'))
 bouton_style1.pack(side=LEFT, padx=5, pady=5)
-#print(csvdyn)
 
 csvdef = None
 bouton_style2 = Button(Frame2_2_a, text = "Style 2", state=NORMAL, command=lambda: recupere('csvdef', 'Frame2_2'))
@@ -323,10 +322,10 @@ csvan = None
 bouton_csvAn = Button(Frame2_3_a, text = "Csv à analyser", state=NORMAL, command=lambda: recupere('csvan', 'Frame2_3'))
 bouton_csvAn.pack(side=LEFT, padx=5, pady=5)
 
-bouton9 = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
+bouton_lancerAnalyse = Button(Frame1, text="Lancer l'analyse", command=lambda: graph(csvan, csvdyn, csvdef, res[0], res[1], res[2], parser))
 
-bouton10 = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
-bouton10.pack() 
+bouton_reinit = Button(Frame1, text="Réinitialiser", command=lambda: reinit(tabfig, contenantonglets, l4))
+bouton_reinit.pack() 
 
 boutonpoids = Button(Frame1, text="Changer les poids", command=lambda: changerPoids())
 
@@ -337,15 +336,15 @@ boutondoc.pack()
 string1 = None
 nom1 = Label(Frame2_1_b, text='Nom de la courbe')
 e1 = Entry(Frame2_1_b, textvariable=string1)
-boutone1 = Button(Frame2_1_b, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
+bouton_entry1 = Button(Frame2_1_b, text = "Valider", command=lambda: getEntry(e1, 'Frame2_1'))
 string2 = None
 nom2 = Label(Frame2_2, text='Nom de la courbe')
 e2 = Entry(Frame2_2, textvariable=string2)
-boutone2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, 'Frame2_2'))
+bouton_entry2 = Button(Frame2_2, text = "Valider", command=lambda: getEntry(e2, 'Frame2_2'))
 string3 = None
 nom3 = Label(Frame2_3, text='Nom de la courbe')
 e3 = Entry(Frame2_3, textvariable=string3)
-boutone3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Frame2_3'))
+bouton_entry3 = Button(Frame2_3, text = "Valider", command=lambda: getEntry(e3, 'Frame2_3'))
 
 #changer le préfixe du parser
 nomp = Label(Frame2, text='Changer le préfixe de parsing')
