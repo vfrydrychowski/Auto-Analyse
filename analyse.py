@@ -1,10 +1,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import scipy.special as spef
 import re
 import erreur
-
+"""
+    Ce script comporte les fonctions de calculs de ressemblance des courbes
+    Il contient aussi les formatages de csv pour l'interpolation du temporel vers le spatial
+"""
 gdfa = None #dataframe utilisateur  
 gdf1 = None #dataframe style1
 gdf2 = None #dataframe style2
