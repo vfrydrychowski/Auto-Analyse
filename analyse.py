@@ -15,6 +15,13 @@ gdf2 = None #dataframe style2
 #in: dframe
 #out: nouveau dataframe avec insertion de la vitesse
 def calcVitesse(df):
+    """
+    Calcul la vitesse en faisant la norme des vecteurs vitesse et en prenant le signe du vecteur vitesse x, soit la direction dans l'axe du chassis du véhicule 0.
+    Args:
+        df:   dataframe panda indexé sur 'time' et comportant '[00].VehicleUpdate-speed.001', '[00].VehicleUpdate-speed.002', '[00].VehicleUpdate-speed.003'
+    Returns:
+        tdf : une copie du dataframe panda auquel on a ajouté la colonne 'Vitesse' en première position
+    """
     tdf = df.fillna(value=0)
     tdf.insert(0, 'Vitesse', np.sign(tdf.get('[00].VehicleUpdate-speed.001'))*np.sqrt(tdf.get('[00].VehicleUpdate-speed.001')**2 + tdf.get('[00].VehicleUpdate-speed.002')**2 + tdf.get('[00].VehicleUpdate-speed.003')**2))
     return tdf
@@ -23,6 +30,13 @@ def calcVitesse(df):
 #in: dframe
 #out: nouveau dataframe avec insertion de l'acceleration
 def calcAccel(df):
+    """
+    Calcul l'acceleration en faisant la norme des vecteurs acceleration et en prenant le signe du vecteur acceleration x, soit la direction dans l'axe du chassis du véhicule 0.
+    Args:
+        df:   dataframe panda indexé sur 'time' et comportant '[00].VehicleUpdate-accel.001', '[00].VehicleUpdate-accel.002', '[00].VehicleUpdate-accel.003'
+    Returns:
+        tdf : une copie du dataframe panda auquel on a ajouté la colonne 'Acceleration' en première position
+    """
     tdf = df.fillna(value=0)
     tdf.insert(0, 'Acceleration', np.sign(tdf.get('[00].VehicleUpdate-accel.001'))*np.sqrt(tdf.get('[00].VehicleUpdate-accel.001')**2 + tdf.get('[00].VehicleUpdate-accel.002')**2 + tdf.get('[00].VehicleUpdate-accel.003')**2))
     return tdf
@@ -32,16 +46,36 @@ def calcAccel(df):
 #in: dframe
 #out: nouveau dataframe avec insertion de la distance
 def calcDistance(df):
+    """
+    Calcul la distance à l'instant t depuis le début du tableau. La fréquence d'échantillonage doit être constante.
+    Args:
+        df:   dataframe panda indexé sur 'time' et comportant 'Vitesse'.
+    Returns:
+        tdf: une copie du dataframe panda auquel on a ajouté la colonne 'distance' en première position
+    """
     tdf = df.fillna(value=0)
     tdf.insert(0, 'distance', (tdf.get('Vitesse')*(tdf.index[1]-tdf.index[0])).cumsum())
     return tdf
 
 #calcule le schema de la courbe de vitesse
-def plotVitesse(dfAn, dfAgg, dfDef, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
+def plotVitesse(dfAn, df1, df2, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
+    """
+    Calcul la pyplot.fig qui représente les courbes de vitesse des trois dataframes.
+    Args:
+        dfAn:   dataframe panda (a analyser) indexé sur 'time' et comportant 'distance' et 'Vitesse'.
+        df1 :   dataframe panda (du style 1) indexé sur 'time' et comportant 'distance' et 'Vitesse'.
+        df2 :   dataframe panda (du style 2) indexé sur 'time' et comportant 'distance' et 'Vitesse'.
+    Kwargs:
+        label0: string, nom de la courbe à analyser.
+        label1: string, nom de la courbe du style 1.
+        label2: string, nom de la courbe du style 2.
+    Returns:
+        fig : pyplot.fig contenant les courbes de vitesses
+    """
     fig = plt.figure(glabel, figsize=(5,3.7))
     plt.plot(dfAn['distance'], dfAn['Vitesse'], label = label0, color = 'blue')
-    plt.plot(dfAgg['distance'], dfAgg['Vitesse'], label = label1, color = 'red')
-    plt.plot(dfDef['distance'], dfDef['Vitesse'], label = label2, color = 'green')
+    plt.plot(df1['distance'], df1['Vitesse'], label = label1, color = 'red')
+    plt.plot(df2['distance'], df2['Vitesse'], label = label2, color = 'green')
     plt.legend()
     plt.xlabel('Distance m')
     plt.ylabel('Vitesse m/s')
@@ -50,6 +84,19 @@ def plotVitesse(dfAn, dfAgg, dfDef, glabel, label0 = 'User', label1 = 'style1', 
 
 #calcule le schema de la courbe d'acceleration
 def plotAcceleration(df0, df1, df2, glabel, label0 = 'User', label1 = 'style1', label2 = 'style2'):
+    """
+    Calcul la pyplot.fig qui représente les courbes d'acceleration des trois dataframes.
+    Args:
+        dfAn:   dataframe panda (a analyser) indexé sur 'time' et comportant 'distance' et 'Acceleration'.
+        df1 :   dataframe panda (du style 1) indexé sur 'time' et comportant 'distance' et 'Acceleration'.
+        df2 :   dataframe panda (du style 2) indexé sur 'time' et comportant 'distance' et 'Acceleration'.
+    Kwargs:
+        label0: string, nom de la courbe à analyser.
+        label1: string, nom de la courbe du style 1.
+        label2: string, nom de la courbe du style 2.
+    Returns:
+        fig : pyplot.fig contenant les courbes d'acceleration
+    """
     fig = plt.figure(glabel, figsize=(5,3))
     plt.plot(df0['distance'], df0['Acceleration'], label = label0, color = 'blue')
     plt.plot(df1['distance'], df1['Acceleration'], label = label1, color = 'red')
@@ -64,6 +111,16 @@ def plotAcceleration(df0, df1, df2, glabel, label0 = 'User', label1 = 'style1', 
 #in: une string
 #out: un bool
 def filter(string, parseString = "Parser"):
+    """
+    Reconnait une chaine de caractère comme un nom de délimiteur de tronçon.
+    La chaine doit commencer par parseString et se terminer par un nombre.
+    Args:
+        string: Chaine de caractère
+    Kwargs:
+        parseString: le nom des triggers délimitants un tronçon sans le chiffre à la fin.
+    Returns:
+        bolean
+    """
     if re.match(parseString + "\d*", string) != None:
         return True
     else:
@@ -71,6 +128,13 @@ def filter(string, parseString = "Parser"):
 
 #traduit la colonne des trigger en int et leur etat
 def trigToInt(df):
+    """
+    Transforme les noms des triggers délimitants les tronçons en integers ainsi que leurs états.
+    Args:
+        df: dataframe panda contenant 'TriggeredState-name' et 'TriggeredState-state'.
+    Returns:
+        dataf: copie de df contenant des int dans les colonnes d'états et de noms
+    """
     dataf = df.copy()
     
     name_loc = df.columns.get_loc('TriggeredState-name') # recupération des emplacements des colonnes
@@ -83,9 +147,6 @@ def trigToInt(df):
     
     return dataf
 
-#fonction boolean de masque du troncon i
-def isTroncon(df,i):
-    return df['TriggeredState-name'] == i or (df['TriggeredState-name'] == i+1 and df['TriggeredState-state'] == 1)
 
 #retourne l'index de la première et dernière valeur du tronçon
 def getIndex(data, i):
@@ -183,8 +244,8 @@ def get_data():
 
 #calcul le tableau de grtaphiques tronçons*features
 #TODO multi paramêtres et multi tronçons
-def plot_graph(dfAn, dfAgg, dfDef,label0 = 'User', label1 = 'style1', label2 = 'style2', parseString = "Parser"):
-    csvs = [dfAn, dfAgg, dfDef]
+def plot_graph(dfAn, df1, df2,label0 = 'User', label1 = 'style1', label2 = 'style2', parseString = "Parser"):
+    csvs = [dfAn, df1, df2]
     DV = [calcDistance(calcVitesse(calcAccel(x))) for x in csvs]
     #tronc = np.transpose([parse(x, parseString) for x in DV])
     tronc = [parse(x, parseString) for x in DV]
