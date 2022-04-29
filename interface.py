@@ -134,8 +134,6 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) : #dessiner les graph
 			#contenantfigs[k].configure(highlightthickness=0)
 			contenantfigs[k].pack(padx=2, pady=2, expand=1, fill="both")
 
-			#lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
-			#lbuttons[k].pack(side=BOTTOM)
 			for l in range(j) :
 				#créer des labels pour contenir les fig
 				canvas = FigureCanvasTkAgg(tabfig[k][l], master=contenantfigs[k])
