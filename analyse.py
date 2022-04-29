@@ -150,11 +150,28 @@ def trigToInt(df):
 
 #retourne l'index de la première et dernière valeur du tronçon
 def getIndex(data, i):
+    """
+    Calcul et retourne les indexes de départ du tronçon i dans le dataframe data
+    Args:
+        data: dataframe panda contenant 'TriggeredState-name', colonne contenant des integers
+        i: numéro du tronçon
+    Returns:
+        (iBegin,iEnd) : tuple des index de départ et d'arrivé
+    """
     return (data[data['TriggeredState-name'] == i].head(1).index, data[data['TriggeredState-name'] == i+1].head(1).index)
 
 #à partir d'un dataframe, découpe en tableaux de dataframes en fonctions des triggers
 #TODO exeption de nb impair de triggers
 def parse(dataf, parseString = "Parser"):
+    """
+    Sépare dataf en un tableau selon les tronçons.
+    Args:
+        dataf: dataframe panda contenant 'TriggeredState-name', 'TriggeredState-state'
+    Kwargs:
+        parseString: le nom des triggers délimitants un tronçon sans le chiffre à la fin.
+    Returns:
+        tableD: le tableau contenant des dataframes panda, les differents tronçons.
+    """
     df = dataf[[filter(str(x), parseString) for x in dataf['TriggeredState-name'].fillna(value="0")]]#filtration des bon formats de parsers
     df = trigToInt(df)
     dim = len(df['TriggeredState-name'].unique()) #calcul du nombre de triggers
@@ -170,10 +187,26 @@ def parse(dataf, parseString = "Parser"):
 
 #donne la ligne du dataframe la plus proche de la distance d
 def getClosestD(df,d):
+    """
+    donne la ligne de df la plus proche de la distance d. Utilisé pour l'interpolation.
+    Args:
+        df: dataframe panda contenant 'distance'
+        d: integers représentant la distance désiré
+    Returns:
+        dataframe de 1 ligne de df
+    """
     return df.iloc[(df['distance']-d).abs().argmin()]
 
 #création du sataframe avec les valeurs de d2 indexé sur la distance de d1
-def createClosestD(df1,df2): 
+def createClosestD(df1,df2):
+    """
+    Création du dataframe avec les valeurs de df2 indexé sur la distance de df1.
+    Args:
+        df1: dataframe panda contenant 'distance'
+        df2: dataframe panda contenant 'distance'
+    Returns:
+        ndf2: copy de df2 avec les nouvelle valeurs de 'distance'
+    """ 
     l = []
     for x in df1['distance']:
         l.append([y for y in getClosestD(df2,x)])
