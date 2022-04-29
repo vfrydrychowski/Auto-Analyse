@@ -210,10 +210,8 @@ def createClosestD(df1,df2):
     l = []
     for x in df1['distance']:
         l.append([y for y in getClosestD(df2,x)])
-    ndf2 = pd.DataFrame(l,columns = df1.columns)
-    dist2 = pd.Series(df1['distance'].values, name = 'distance', index = df1.index) #alignement de la distance sur celle du premier tableau
-    df2.update(dist2)
-    df2.set_index('distance')
+    ndf2 = pd.DataFrame(l,columns = df1.columns) #recupération des lignes de df2 ayant la distance la plus proche de df1
+    ndf2 = ndf2.set_index(pd.Series(df1.index, name = 'time')) #alignement de ndf2 sur l'index de df1
     return ndf2
 
 #normalisation de x entre -1 et 1
