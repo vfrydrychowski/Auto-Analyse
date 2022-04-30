@@ -88,12 +88,16 @@ Fonctions</h2></td></tr>
 <tr class="memdesc:a5e2d0725e91c3f45f92df3d3a904357e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet d'afficher les graphes.  <a href="namespaceinterface.html#a5e2d0725e91c3f45f92df3d3a904357e">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a5e2d0725e91c3f45f92df3d3a904357e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b62e9ebe5f07862be149f18a089fd3c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinterface.html#a0b62e9ebe5f07862be149f18a089fd3c">reinit</a> (tab, frame, frame2)</td></tr>
+<tr class="memdesc:a0b62e9ebe5f07862be149f18a089fd3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de réinitialiser la fenêtre en supprimant le tableau de figures, les frames qui affichent les graphes et les résultats, ainsi que les éléments pour changer les noms des courbes.  <a href="namespaceinterface.html#a0b62e9ebe5f07862be149f18a089fd3c">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a0b62e9ebe5f07862be149f18a089fd3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e446d850d2bbbd696cf862a85082126"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinterface.html#a7e446d850d2bbbd696cf862a85082126">changerPoids</a> ()</td></tr>
+<tr class="memdesc:a7e446d850d2bbbd696cf862a85082126"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de changer les poids des tronçons et des paramètres.  <a href="namespaceinterface.html#a7e446d850d2bbbd696cf862a85082126">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a7e446d850d2bbbd696cf862a85082126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8f2bbe1f148451c9b6bf092507a17ee"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinterface.html#ac8f2bbe1f148451c9b6bf092507a17ee">valider</a> ()</td></tr>
+<tr class="memdesc:ac8f2bbe1f148451c9b6bf092507a17ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Permet de valider les changements de poids, recalculer les résultats et les afficher.  <a href="namespaceinterface.html#ac8f2bbe1f148451c9b6bf092507a17ee">Plus de détails...</a><br /></td></tr>
 <tr class="separator:ac8f2bbe1f148451c9b6bf092507a17ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11dae3bd31064933a2a2ccd120bfcd6b"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinterface.html#a11dae3bd31064933a2a2ccd120bfcd6b">affichedoc</a> ()</td></tr>
+<tr class="memdesc:a11dae3bd31064933a2a2ccd120bfcd6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ouvre la documentation dans le navigateur.  <a href="namespaceinterface.html#a11dae3bd31064933a2a2ccd120bfcd6b">Plus de détails...</a><br /></td></tr>
 <tr class="separator:a11dae3bd31064933a2a2ccd120bfcd6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
@@ -227,6 +231,8 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Ouvre la documentation dans le navigateur. </p>
+
 </div>
 </div>
 <a id="aa6d4f9a4a63078547a9da51763b0e325" name="aa6d4f9a4a63078547a9da51763b0e325"></a>
@@ -269,6 +275,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Permet de changer les poids des tronçons et des paramètres. </p>
+<p >Crée une nouvelle fenêtre dans laquelle l'utilisateur peut saisir les nouvelles valeurs. Les valeurs par défaut sont toutes à 1 et si l'utilisateur rentre une valeur qui n'est pas entre 0 et 1, celles-ci est automatiquement remmise à 1. </p>
 
 </div>
 </div>
@@ -366,10 +375,16 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Permet d'afficher les graphes. </p>
+<p >En récupérant le tableau de figures renvoyé par la fonction plot_graph du fichier analyse puis en affichant dynamiquement les onglets et les graphes à l'intérieur en fonction de la taille du tableau. Affiche également les résultats de l'analyse.</p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
-    <tr><td class="paramname">strGlob</td><td>Stocke le contenu du csv. </td></tr>
-    <tr><td class="paramname">nom_frame</td><td>Nom de la frame contenant le bouton sélectionné. </td></tr>
+    <tr><td class="paramname">csvan</td><td>Contenu du fichier csv à analyser. </td></tr>
+    <tr><td class="paramname">csvdyn</td><td>Contenu du fichier csv du style 1. </td></tr>
+    <tr><td class="paramname">csvdef</td><td>Contenu du fichier csv du style 2. </td></tr>
+    <tr><td class="paramname">res0</td><td>Nom de la courbe du fichier à analyser donnée par l'utilisateur, par défaut User. </td></tr>
+    <tr><td class="paramname">res1</td><td>Nom de la courbe du style 1 donnée par l'utilisateur, par défaut Style1. </td></tr>
+    <tr><td class="paramname">res2</td><td>Nom de la courbe du style 2 donnée par l'utilisateur, par défaut Style2. </td></tr>
+    <tr><td class="paramname">parser</td><td>Nom du préfixe de parsing donné par l'utilisateur, par défaut Parser. </td></tr>
   </table>
   </dd>
 </dl>
@@ -403,7 +418,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Permet de récupérer les fichiers d'analyse csv dans l'explorateur de documents. </p>
-<p >Impossible de sélectionner autre chose qu'un fichier csv.</p>
+<p >Impossible de sélectionner autre chose qu'un fichier csv. Une fois les fichiers sélectionnés les boutons correspondants deviennent inutilisables et si les trois csv ont été sélectionnés le bouton pour lancer l'analyse devient visible.</p>
 <dl class="params"><dt>Paramètres</dt><dd>
   <table class="params">
     <tr><td class="paramname">strGlob</td><td>Stocke le contenu du csv. </td></tr>
@@ -445,6 +460,17 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Permet de réinitialiser la fenêtre en supprimant le tableau de figures, les frames qui affichent les graphes et les résultats, ainsi que les éléments pour changer les noms des courbes. </p>
+<p >Supprime également les chemins affichés des csv sélectionnés, cache le bouton pour changer les poids et rend à nouveau utilisables les boutons pour choisir les csv.</p>
+<dl class="params"><dt>Paramètres</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tab</td><td>Tableau de figures. </td></tr>
+    <tr><td class="paramname">frame</td><td>Frame contenant les graphes. </td></tr>
+    <tr><td class="paramname">frame2</td><td>Frame contenant les résultats. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -489,6 +515,9 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Permet de valider les changements de poids, recalculer les résultats et les afficher. </p>
+<p >Ferme également la fenêtre de changement des poids. </p>
 
 </div>
 </div>
