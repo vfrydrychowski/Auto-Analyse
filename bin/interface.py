@@ -161,7 +161,7 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 		#on affiche les onglets dynamiquement
 		contenantonglets = Frame(fenetre, borderwidth=2)
-		contenantonglets.pack(side=TOP, padx=5, pady=5)
+		contenantonglets.pack(side=TOP, padx=5, pady=5, expand=1, fill="both")
 		onglets = ttk.Notebook(contenantonglets)
 
 		#affichage des graphes sur les tronçons
@@ -171,10 +171,8 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 			contenantfigs.append(Canvas(longlets[k], highlightthickness=0, height=50, width=50))
 			#contenantfigs[k].configure(highlightthickness=0)
-			contenantfigs[k].pack(padx=2, pady=2)
+			contenantfigs[k].pack(padx=2, pady=2, expand=1, fill="both")
 
-			lbuttons.append(Button(longlets[k], text="Sauvegarder", command=lambda: save(tabfig)))
-			lbuttons[k].pack(side=BOTTOM)
 			for l in range(j) :
 				#créer des labels pour contenir les fig
 				canvas = FigureCanvasTkAgg(tabfig[k][l], master=contenantfigs[k])
@@ -183,7 +181,8 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 				#a verifier si ça marche qd plusieurs tabs par onglets
 
 		onglets.pack(side=BOTTOM, expand=1, fill="both")
-
+		saveButton = Button(fenetre, text="Sauvegarder", command=lambda: save(tabfig))
+		saveButton.pack(side=BOTTOM)
 		#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
 		bouton_lancerAnalyse.pack_forget()
 		#on peut modifier les poids
