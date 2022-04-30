@@ -25,7 +25,7 @@ l4 = None
 def recupere(strGlob, nom_frame):
 	"""
     Permet de récupérer les fichiers d'analyse csv dans l'explorateur de documents. 
-    Impossible de sélectionner autre chose qu'un fichier csv.
+    Impossible de sélectionner autre chose qu'un fichier csv. Une fois les fichiers sélectionnés les boutons correspondants deviennent inutilisables et si les trois csv ont été sélectionnés le bouton pour lancer l'analyse devient visible.
     Args:
         strGlob:   Stocke le contenu du csv.
         nom_frame:   Nom de la frame contenant le bouton sélectionné.
@@ -120,10 +120,17 @@ def callback(texte) :
 
 def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 	"""
-    Permet d'afficher les graphes.
+    Permet d'afficher les graphes. En récupérant le tableau de figures renvoyé par la fonction plot_graph du fichier analyse puis en affichant dynamiquement les onglets et les graphes à l'intérieur en fonction de la taille du tableau.
+    Affiche également les résultats de l'analyse.
     Args:
-        strGlob:   Stocke le contenu du csv.
-        nom_frame:   Nom de la frame contenant le bouton sélectionné.
+        csvan:   Contenu du fichier csv à analyser.
+        csvdyn:   Contenu du fichier csv du style 1.
+        csvdef:   Contenu du fichier csv du style 2.
+        res0:   Nom de la courbe du fichier à analyser donnée par l'utilisateur, par défaut User.
+        res1:   Nom de la courbe du style 1 donnée par l'utilisateur, par défaut Style1.
+        res2:   Nom de la courbe du style 2 donnée par l'utilisateur, par défaut Style2.
+        parser:   Nom du préfixe de parsing donné par l'utilisateur, par défaut Parser.
+        
     """
 	global tabfig
 	global contenantonglets
@@ -186,6 +193,14 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 
 def reinit(tab, frame, frame2) : #tout réinitialiser
+	"""
+    Permet de réinitialiser la fenêtre en supprimant le tableau de figures, les frames qui affichent les graphes et les résultats, ainsi que les éléments pour changer les noms des courbes.
+    Supprime également les chemins affichés des csv sélectionnés, cache le bouton pour changer les poids et rend à nouveau utilisables les boutons pour choisir les csv.
+    Args:
+        tab:   Tableau de figures.
+        frame:   Frame contenant les graphes.
+        frame2:   Frame contenant les résultats.
+    """
 #si le tab n'est pas vide c'est qu'on a un affichage donc on le supprime
 	if(tab.ndim and tab.size) :
 		#on supprime la frame qui les affiche
@@ -237,7 +252,10 @@ v = 0
 a = 0
 l = []
 
-def changerPoids() : #changer les poids des tronçons et des paramètres
+def changerPoids() :
+	"""
+    Permet de changer les poids des tronçons et des paramètres. Crée une nouvelle fenêtre dans laquelle l'utilisateur peut saisir les nouvelles valeurs. Les valeurs par défaut sont toutes à 1 et si l'utilisateur rentre une valeur qui n'est pas entre 0 et 1, celles-ci est automatiquement remmise à 1.
+    """
 	global page
 	page = Toplevel(fenetre) #on ouvre une nouvelle page
 	global entreevit, entreeacc, listptroncons
@@ -268,6 +286,9 @@ def changerPoids() : #changer les poids des tronçons et des paramètres
 
 
 def valider() : #valider les changements de poids
+	"""
+    Permet de valider les changements de poids, recalculer les résultats et les afficher. Ferme également la fenêtre de changement des poids.
+    """
 	global v, a, l
 	#si l'user a mis une val qui n'est pas entre 0 et 1 on remet tout à 1
 	v = entreevit.get()
@@ -302,7 +323,10 @@ def valider() : #valider les changements de poids
 	page.destroy()
 
 
-def affichedoc() : #bouton permettant d'ouvrir la doc dans le navigateur
+def affichedoc() :
+	"""
+    Ouvre la documentation dans le navigateur.
+    """
 	webbrowser.open('test.html')
 
 
