@@ -341,7 +341,9 @@ def affichedoc() :
     Ouvre la documentation dans le navigateur.
     """
 	html = resource_path("doc/html/index.html")
+	pdf = resource_path("doc/Manuel_Utilisateur.pdf")
 	webbrowser.open(html)
+	webbrowser.open(pdf)
 
 
 
