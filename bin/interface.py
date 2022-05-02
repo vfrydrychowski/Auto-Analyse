@@ -141,7 +141,6 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 
 		contenantfigs = []
 		longlets = []
-		lbuttons = []
 
 		#afficher le score
 		fonctionValentin = an.get_score(csvan, csvdyn, csvdef)
@@ -181,6 +180,7 @@ def graph(csvan, csvdyn, csvdef, res0, res1, res2, parser) :
 				#a verifier si ça marche qd plusieurs tabs par onglets
 
 		onglets.pack(side=BOTTOM, expand=1, fill="both")
+		global saveButton
 		saveButton = Button(fenetre, text="Sauvegarder", command=lambda: save(tabfig))
 		saveButton.pack(side=BOTTOM)
 		#bouton lancer analyse supprimé tant que les csv ne sont pas chargés et qu'on n'a pas réinit
@@ -235,6 +235,9 @@ def reinit(tab, frame, frame2) : #tout réinitialiser
 
 	#on enlève le bouton pour changer les poids
 	boutonpoids.pack_forget()
+
+	#on supprime le bouton de sauvegarde
+	saveButton.pack_forget()
 
 	#on rend à nouveau les boutons de choix de csv accessibles
 	bouton_style1['state']=NORMAL
@@ -386,6 +389,8 @@ boutonpoids = Button(Frame1, text="Changer les poids", command=lambda: changerPo
 
 boutondoc = Button(Frame2, text = "Documentation", command=affichedoc)
 boutondoc.pack()
+
+global saveButton
 
 #changer nom courbe
 string1 = None
